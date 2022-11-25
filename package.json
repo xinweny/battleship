@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "jest --watch --verbose"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/xinweny/battleship/issues"
   },
-  "homepage": "https://github.com/xinweny/battleship#readme"
+  "homepage": "https://github.com/xinweny/battleship#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
 }
