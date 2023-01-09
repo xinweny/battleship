@@ -7,11 +7,12 @@ const shipActions = {
 	},
 };
 
-const Ship = length => {
+const Ship = (length, name) => {
 	let ship = Object.create(shipActions);
 
 	ship.length = length;
 	ship.hits = 0;
+	ship.name = name;
 
 	return ship;
 };
