@@ -60,7 +60,7 @@ const gameboardActions = {
 		}
 
 		this.misses = [];
-	}
+	},
 };
 
 const GameBoard = () => {
