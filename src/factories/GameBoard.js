@@ -2,7 +2,12 @@ const gameboardActions = {
 	placeShip: function(ship, start, axis) {
 		for (i = 0; i < ship.length; i++) {
 			let loc = (axis === 'x') ? start + i : start + (i * 10);
-			this.board[loc].ship = ship.name;
+
+			if (loc >= 100 || this.board[loc].ship != null) {
+				throw new Error('Invalid placement');
+			} else {
+				this.board[loc].ship = ship.name;
+			}
 		}
 	}
 };

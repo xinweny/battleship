@@ -32,4 +32,16 @@ describe('Should place ships at the correct coordinates', () => {
 			expect(cell.ship).toBe('patrol boat');
 		}
 	});
+
+	it('does not allow out-of-bounds placement', () => {
+		const battleship = Ship(4, 'battleship');
+
+		expect(() => board.placeShip(battleship, 9, 'x')).toThrow('Invalid placement');
+	});
+
+	it('does not allow placement overlapping other ships', () => {
+		const submarine = Ship(3, 'submarine');
+
+		expect(() => board.placeShip(submarine, 10, 'x')).toThrow('Invalid placement');
+	});
 });
