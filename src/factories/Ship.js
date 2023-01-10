@@ -1,9 +1,13 @@
 const shipActions = {
 	hit() {
 		this.hits = this.hits + 1;
+
+		if (this.hits == this.length) {
+			this.sunk = true;
+		}
 	},
 	isSunk() {
-		return this.hits == this.length;
+		return this.sunk;
 	},
 };
 
@@ -13,6 +17,7 @@ const Ship = (length, name) => {
 	ship.length = length;
 	ship.hits = 0;
 	ship.name = name;
+	ship.sunk = false;
 
 	return ship;
 };

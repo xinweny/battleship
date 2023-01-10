@@ -5,6 +5,7 @@ it('Returns an object with the correct properties', () => {
 		length: 5,
 		hits: 0,
 		name: 'carrier',
+		sunk: false,
 	};
 
 	expect(Ship(5, 'carrier')).toEqual(obj);
@@ -18,7 +19,7 @@ it('Increases the number of hits of the ship when hit', () => {
 });
 
 it('Checks if the ship is sunk when hit enough times', () => {
-	const ship = Ship(2, 'patrol boat');
+	const ship = Ship(2, 'patrolBoat');
 	ship.hit();
 	ship.hit();
 

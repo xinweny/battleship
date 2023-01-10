@@ -1,9 +1,9 @@
 const GameBoard = require('../factories/GameBoard');
 const Ship = require('../factories/Ship');
 
-it('Instantiates board object correctly', () => {
-	const board = GameBoard();
+const board = GameBoard();
 
+it('Instantiates board object correctly', () => {
 	expect(board.board.length).toBe(100);
 	for (const cell of board.board) {
 		expect(cell).toEqual({ ship: null, isShot: false });
@@ -11,12 +11,8 @@ it('Instantiates board object correctly', () => {
 });
 
 describe('Should place ships at the correct coordinates', () => {
-	const board = GameBoard();
-
 	it('places ship correctly on x-axis', () => {
-		const carrier = Ship(5, 'carrier');
-
-		board.placeShip(carrier, 0, 'x');
+		board.placeShip('carrier', 0, 'x');
 
 		for (const cell of board.board.slice(0, 5)) {
 			expect(cell.ship).toBe('carrier');
@@ -24,24 +20,33 @@ describe('Should place ships at the correct coordinates', () => {
 	});
 
 	it('places ship correctly on y-axis', () => {
-		const patrolBoat = Ship(2, 'patrol boat');
-
-		board.placeShip(patrolBoat, 10, 'y');
+		board.placeShip('patrolBoat', 10, 'y');
 	
 		for (const cell of [10, 20].map(i => board.board[i])) {
-			expect(cell.ship).toBe('patrol boat');
+			expect(cell.ship).toBe('patrolBoat');
 		}
 	});
 
 	it('does not allow out-of-bounds placement', () => {
-		const battleship = Ship(4, 'battleship');
-
-		expect(() => board.placeShip(battleship, 9, 'x')).toThrow('Invalid placement');
+		expect(() => board.placeShip('battleship', 9, 'x')).toThrow('Invalid placement');
 	});
 
 	it('does not allow placement overlapping other ships', () => {
-		const submarine = Ship(3, 'submarine');
+		expect(() => board.placeShip('submarine', 10, 'x')).toThrow('Invalid placement');
+	});
 
-		expect(() => board.placeShip(submarine, 10, 'x')).toThrow('Invalid placement');
+	describe('records hits and misses correctly', () => {
+		it('records and increases hit at occupied cell', () => {
+			board.receiveAttack(4);
+
+			expect(board.board[4].isShot).toBe(true);
+			expect(board.shipAt(4).hits).toBe(1);
+		});
+
+		it('records a miss at empty cell', () => {
+			board.receiveAttack(99);
+
+			expect(board.isShotHit(99)).toBe(false);
+		});
 	});
 });
