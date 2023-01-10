@@ -1,6 +1,13 @@
 const Ship = require('../factories/Ship');
 
 const gameboardActions = {
+	initBoard() {
+		this.board = [];
+
+		for (i = 0; i < 100; i++) {
+			this.board.push({ ship: null, isShot: false });
+		}
+	},
 	placeShip(shipName, start, axis) {
 		const ship = this.ships[shipName];
 
@@ -8,7 +15,7 @@ const gameboardActions = {
 			let loc = (axis === 'x') ? start + i : start + (i * 10);
 
 			if (loc >= 100 || this.board[loc].ship != null) {
-				throw new Error('Invalid placement');
+				return false;
 			} else {
 				this.board[loc].ship = ship.name;
 			}
@@ -33,22 +40,33 @@ const gameboardActions = {
 	shipAt(loc) {
 		return this.ships[this.board[loc].ship];
 	},
+	shipsSunk() {
+		let sunk = 0;
+
+		for (const ship in this.ships) {
+			if (this.ships[ship].isSunk()) {
+				sunk += 1;
+			}
+		}
+
+		return sunk;
+	},
+	clear() {
+		this.initBoard();
+
+		for (const [shipName, ship] of Object.entries(this.ships)) {
+			ship.hits = 0;
+			ship.sunk = false;
+		}
+
+		this.misses = [];
+	}
 };
 
 const GameBoard = () => {
-	function initBoard() {
-		let board = [];
-
-		for (i = 0; i < 100; i++) {
-			board.push({ ship: null, isShot: false });
-		}
-
-		return board;
-	}
-
 	let gameboard = Object.create(gameboardActions);
 
-	gameboard.board = initBoard();
+	gameboard.initBoard();
 
 	gameboard.ships = {
 		carrier: Ship(5, 'carrier'),
