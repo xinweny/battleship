@@ -18,12 +18,16 @@ const gameboardActions = {
 		return this.board[loc].isShot && this.board[loc].ship != null;
 	},
 	receiveAttack(loc) {
-		this.board[loc].isShot = true;
+		if (!this.board[loc].isShot) {
+			this.board[loc].isShot = true;
 
-		const ship = this.board[loc].ship;
-
-		if (ship) {
-			this.ships[ship].hit();
+			const ship = this.board[loc].ship;
+	
+			if (ship) {
+				this.ships[ship].hit();
+			} else {
+				this.misses.push(loc);
+			}
 		}
 	},
 	shipAt(loc) {
@@ -53,6 +57,8 @@ const GameBoard = () => {
 		submarine: Ship(3, 'submarine'),
 		patrolBoat: Ship(2, 'patrolBoat'),
 	};
+
+	gameboard.misses = [];
 
 	return gameboard;
 };

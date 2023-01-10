@@ -49,4 +49,9 @@ describe('Should place ships at the correct coordinates', () => {
 			expect(board.isShotHit(99)).toBe(false);
 		});
 	});
+
+	it('should keep track of missed attacks', () => {
+		board.receiveAttack(87);
+		expect(board.misses).toEqual([99, 87]);
+	});
 });
