@@ -8,6 +8,10 @@ class AI {
 
 		return loc;
 	}
+
+	placeShips() {
+		
+	}
 }
 
 module.exports = AI;
