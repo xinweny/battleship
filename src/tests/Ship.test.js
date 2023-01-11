@@ -8,18 +8,18 @@ it('Returns an object with the correct properties', () => {
 		sunk: false,
 	};
 
-	expect(Ship(5, 'carrier')).toEqual(obj);
+	expect(new Ship(5, 'carrier')).toEqual(obj);
 });
 
 it('Increases the number of hits of the ship when hit', () => {
-	const ship = Ship(3, 'destroyer');
+	const ship = new Ship(3, 'destroyer');
 	ship.hit();
 
 	expect(ship.hits).toBe(1);
 });
 
 it('Checks if the ship is sunk when hit enough times', () => {
-	const ship = Ship(2, 'patrolBoat');
+	const ship = new Ship(2, 'patrolBoat');
 	ship.hit();
 	ship.hit();
 

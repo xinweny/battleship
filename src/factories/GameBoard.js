@@ -1,17 +1,28 @@
 const Ship = require('../factories/Ship');
 
-const gameboardActions = {
-	initBoard() {
+class GameBoard {
+	constructor() {
 		this.board = [];
 
-		for (i = 0; i < 100; i++) {
+		for (let i = 0; i < 100; i++) {
 			this.board.push({ ship: null, isShot: false });
 		}
-	},
+
+		this.ships = {
+			carrier: new Ship(5, 'carrier'),
+			battleship: new Ship(4, 'battleship'),
+			cruiser: new Ship(3, 'cruiser'),
+			submarine: new Ship(3, 'submarine'),
+			patrolBoat: new Ship(2, 'patrolBoat'),
+		};
+	
+		this.misses = [];
+	}
+
 	placeShip(shipName, start, axis) {
 		const ship = this.ships[shipName];
 
-		for (i = 0; i < ship.length; i++) {
+		for (let i = 0; i < ship.length; i++) {
 			let loc = (axis === 'x') ? start + i : start + (i * 10);
 
 			if (loc >= 100 || this.board[loc].ship != null) {
@@ -20,10 +31,12 @@ const gameboardActions = {
 				this.board[loc].ship = ship.name;
 			}
 		}
-	},
+	}
+
 	isShotHit(loc) {
 		return this.board[loc].isShot && this.board[loc].ship != null;
-	},
+	}
+
 	receiveAttack(loc) {
 		if (!this.board[loc].isShot) {
 			this.board[loc].isShot = true;
@@ -36,10 +49,12 @@ const gameboardActions = {
 				this.misses.push(loc);
 			}
 		}
-	},
+	}
+
 	shipAt(loc) {
 		return this.ships[this.board[loc].ship];
-	},
+	}
+	
 	shipsSunk() {
 		let sunk = 0;
 
@@ -50,35 +65,7 @@ const gameboardActions = {
 		}
 
 		return sunk;
-	},
-	clear() {
-		this.initBoard();
-
-		for (const [shipName, ship] of Object.entries(this.ships)) {
-			ship.hits = 0;
-			ship.sunk = false;
-		}
-
-		this.misses = [];
-	},
-};
-
-const GameBoard = () => {
-	let gameboard = Object.create(gameboardActions);
-
-	gameboard.initBoard();
-
-	gameboard.ships = {
-		carrier: Ship(5, 'carrier'),
-		battleship: Ship(4, 'battleship'),
-		cruiser: Ship(3, 'cruiser'),
-		submarine: Ship(3, 'submarine'),
-		patrolBoat: Ship(2, 'patrolBoat'),
-	};
-
-	gameboard.misses = [];
-
-	return gameboard;
-};
+	}
+}
 
 module.exports = GameBoard;

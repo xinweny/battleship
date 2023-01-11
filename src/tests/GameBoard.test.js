@@ -1,6 +1,6 @@
 const GameBoard = require('../factories/GameBoard');
 
-const testBoard = GameBoard();
+const testBoard = new GameBoard();
 
 it('Instantiates board object correctly', () => {
 	expect(testBoard.board.length).toBe(100);
@@ -56,7 +56,7 @@ describe('Should place ships at the correct coordinates', () => {
 	});
 
 	it('should report whether or not all ships have been sunk', () => {
-		testBoard.clear();
+		const testBoard = new GameBoard();
 
 		for (const [shipName, ship] of Object.entries(testBoard.ships)) {
 			for (let i = 0; i < ship.length; i++) {
