@@ -28,6 +28,7 @@ class GameBoard {
       if (loc >= 100 || this.board[loc].ship != null) {
         return false;
       }
+
       this.board[loc].ship = ship.name;
     }
 
