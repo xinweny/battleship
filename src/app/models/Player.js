@@ -1,14 +1,12 @@
 const GameBoard = require('./GameBoard');
-const AI = require('../modules/AI');
 
 class Player {
-  constructor(isComp) {
+  constructor(ai) {
     this.board = new GameBoard();
     this.ships = this.board.ships;
-    this.turn = !isComp;
 
-    if (isComp) {
-      this.AI = new AI();
+    if (ai) {
+      this.AI = ai;
     }
   }
 

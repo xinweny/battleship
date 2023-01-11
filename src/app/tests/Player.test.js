@@ -1,8 +1,9 @@
 const Player = require('../models/Player');
 const GameBoard = require('../models/GameBoard');
+const AI = require('../modules/AI');
 
-const player = new Player(false);
-const computer = new Player(true);
+const player = new Player();
+const computer = new Player(new AI());
 
 computer.board.placeShip('carrier', 4, 'x');
 computer.board.placeShip('battleship', 12, 'y');

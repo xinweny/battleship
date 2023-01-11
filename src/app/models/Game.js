@@ -5,6 +5,8 @@ class Game {
     const player = new Player(false);
     const computer = new Player(true);
 
+		let turn = 'player';
+
     // Place player ships
     player.board.placeShip('carrier', 4, 'x');
     player.board.placeShip('battleship', 12, 'y');
