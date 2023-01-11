@@ -1,3 +1,5 @@
+import { createElement } from './helpers';
+
 class View {
   constructor() {
     this.elements = {
@@ -6,19 +8,12 @@ class View {
     };
   }
 
-  createElement(tag, className) {
-    const element = document.createElement(tag);
-    element.className = className;
-
-    return element;
-  }
-
   renderBoard(player) {
     const grid = document.getElementById(`${player.name}-board`);
     const { board } = player.board;
 
     for (let i = 0; i < 100; i += 1) {
-      const cell = this.createElement('div', 'cell');
+      const cell = createElement('div', 'cell');
       cell.setAttribute('data-index', i);
 
       if (board[i].ship && board[i].isShot) {
@@ -32,4 +27,4 @@ class View {
   }
 }
 
-module.exports = View;
+export default View;

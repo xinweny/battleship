@@ -44,16 +44,16 @@ class Game {
   }
 
   play() {
-    while (this.winner == null) {
+    /* while (this.winner == null) {
       if (this.turn === 'p1') {
-        this.p1.fireShot(this.p2);
+        // this.p1.fireShot(this.p2, 1);
         this.view.renderBoard(this.p2);
         this.checkWin(this.p2.board);
       } else {
         this.p2.AI.randomShot(this.p1);
         this.checkWin(this.p1.board);
       }
-    }
+    } */
   }
 }
 

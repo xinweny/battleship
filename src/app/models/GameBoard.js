@@ -1,4 +1,5 @@
 const Ship = require('./Ship');
+const { checkCollisions } = require('../modules/helpers');
 
 class GameBoard {
   constructor() {
@@ -22,17 +23,19 @@ class GameBoard {
   placeShip(shipName, start, axis) {
     const ship = this.ships[shipName];
 
-    for (let i = 0; i < ship.length; i += 1) {
-      const loc = (axis === 'x') ? start + i : start + (i * 10);
+    const locs = [...Array(ship.length).keys()].map((n) => ((axis === 'x') ? start + n : start + (n * 10)));
 
-      if (loc >= 100 || this.board[loc].ship != null) {
-        return false;
+    const isValid = checkCollisions(locs, axis, this.board);
+
+    if (isValid) {
+      for (const loc of locs) {
+        this.board[loc].ship = ship.name;
       }
 
-      this.board[loc].ship = ship.name;
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   isShotHit(loc) {
