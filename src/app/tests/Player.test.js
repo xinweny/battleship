@@ -1,5 +1,5 @@
-import Player from '../factories/Player';
-import GameBoard from '../factories/GameBoard';
+const Player = require('../factories/Player');
+const GameBoard = require('../factories/GameBoard');
 
 const player = new Player(isComp=false);
 const computer = new Player(isComp=true);

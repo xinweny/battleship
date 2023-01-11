@@ -1,4 +1,4 @@
-import Ship from './Ship';
+const Ship = require('./Ship');
 
 class GameBoard {
   constructor() {
@@ -63,10 +63,10 @@ class GameBoard {
       if (this.ships[shipName].isSunk()) {
         sunk += 1;
       }
-
-      return sunk;
     });
+
+    return sunk;
   }
 }
 
-export default GameBoard;
+module.exports = GameBoard;

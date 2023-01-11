@@ -1,4 +1,4 @@
-import Ship from '../factories/Ship.js';
+const Ship = require('../factories/Ship');
 
 it('Returns an object with the correct properties', () => {
 	const obj = {
