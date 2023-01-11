@@ -1,4 +1,4 @@
-const GameBoard = require('../factories/GameBoard');
+const GameBoard = require('../models/GameBoard');
 
 const testBoard = new GameBoard();
 

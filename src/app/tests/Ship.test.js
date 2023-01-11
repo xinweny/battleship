@@ -1,4 +1,4 @@
-const Ship = require('../factories/Ship');
+const Ship = require('../models/Ship');
 
 it('Returns an object with the correct properties', () => {
 	const obj = {

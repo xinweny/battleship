@@ -1,5 +1,5 @@
-const Player = require('../factories/Player');
-const GameBoard = require('../factories/GameBoard');
+const Player = require('../models/Player');
+const GameBoard = require('../models/GameBoard');
 
 const player = new Player(isComp=false);
 const computer = new Player(isComp=true);
