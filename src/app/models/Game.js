@@ -1,10 +1,9 @@
-import GameBoard from './GameBoard';
 import Player from './Player';
 
 class Game {
 	constructor() {
-		const player = new Player(isComp=false);
-		const computer = new Player(isComp=true);
+		const player = new Player(false);
+		const computer = new Player(true);
 
 		// Place player ships
 		player.board.placeShip('carrier', 4, 'x');

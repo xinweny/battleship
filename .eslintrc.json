@@ -1,8 +1,10 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest/globals": true
     },
+    "plugins": ["jest"],
     "extends": "airbnb-base",
     "overrides": [
     ],
@@ -12,6 +14,7 @@
     },
     "parser": "@babel/eslint-parser",
     "rules": {
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
     }
 }
