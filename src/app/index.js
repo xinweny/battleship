@@ -1,5 +1,7 @@
-// import Game from './models/Game';
+import Game from './game';
 
 import '../styles/main.css';
 
-// const game = new Game();
+const game = new Game();
+
+game.renderBoards();

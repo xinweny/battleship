@@ -1,10 +1,13 @@
-import Player from './Player';
-import AI from '../modules/AI';
+import Player from './models/Player';
+import AI from './modules/AI';
+import View from './view';
 
 class Game {
   constructor() {
     this.p1 = new Player(); // Human player
     this.p2 = new Player(new AI()); // Computer
+
+    this.view = new View();
 
     this.turn = 'player';
     this.winner = null;
@@ -23,6 +26,11 @@ class Game {
     this.p2.board.placeShip('cruiser', 97, 'x');
     this.p2.board.placeShip('submarine', 66, 'y');
     this.p2.board.placeShip('patrolBoat', 39, 'x');
+  }
+
+  renderBoards() {
+    this.view.renderBoard(this.p1);
+    this.view.renderBoard(this.p2);
   }
 }
 
