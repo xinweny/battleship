@@ -23,10 +23,8 @@ const computerActions = {
 };
 
 
-const Player = (name, isComp=false) => {
+const Player = (isComp=false) => {
 	let player = Object.create(isComp ? computerActions : playerActions);
-
-	player.name = name;
 
 	player.board = GameBoard();
 	player.ships = player.board.ships;

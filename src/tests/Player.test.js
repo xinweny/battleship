@@ -1,8 +1,8 @@
 const Player = require('../factories/Player');
 const GameBoard = require('../factories/GameBoard');
 
-const player = Player('Donald Duck');
-const computer = Player('Computer', true);
+const player = Player(isComp=false);
+const computer = Player(isComp=true);
 
 computer.board.placeShip('carrier', 4, 'x');
 computer.board.placeShip('battleship', 12, 'y');
@@ -11,7 +11,7 @@ computer.board.placeShip('submarine', 66, 'y');
 computer.board.placeShip('patrolBoat', 39, 'x');
 
 describe('player tests', () => {
-	it('initialises player name and board correctly', () => {
+	it('initialises player correctly', () => {
 		expect(player.name).toBe('Donald Duck');
 		expect(player.board).toEqual(GameBoard());
 	});
