@@ -7,7 +7,7 @@ class Game {
     this.p2 = new Player(new AI()); // Computer
 
     this.turn = 'player';
-		this.winner = null;
+    this.winner = null;
 
     // Place player ships
     this.p1.board.placeShip('carrier', 4, 'x');
