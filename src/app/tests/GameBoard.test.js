@@ -1,4 +1,4 @@
-const GameBoard = require('../factories/GameBoard');
+import GameBoard from '../factories/GameBoard';
 
 const testBoard = new GameBoard();
 
