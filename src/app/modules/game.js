@@ -22,7 +22,7 @@ class Game {
     this.p2.board.placeShip('battleship', 12, 'y');
     this.p2.board.placeShip('cruiser', 97, 'x');
     this.p2.board.placeShip('submarine', 66, 'y');
-    this.p2.board.placeShip('patrolBoat', 39, 'x');
+    this.p2.board.placeShip('patrolBoat', 38, 'x');
   }
 
   switchTurn() {
@@ -33,18 +33,31 @@ class Game {
     if (oppBoard.shipsSunk() === 5) {
       this.winner = this.turn;
     }
+
+    return this.winner;
   }
 
   playPlayerTurn(index) {
-    if (!this.p2.board.board[index].isShot) {
-      this.p1.fireShot(this.p2, index);
-      this.switchTurn();
-      this.playComputerTurn();
+    const oppBoard = this.p2.board;
+    const outcome = {
+      validMove: false,
+      opponent: this.p2,
+      winner: null,
+    };
 
-      return this.p2;
+    if (!oppBoard.board[index].isShot) {
+      outcome.validMove = true;
+      this.p1.fireShot(this.p2, index);
+
+      if (this.checkWin(oppBoard)) {
+        outcome.winner = this.winner;
+        return outcome;
+      }
+
+      this.switchTurn();
     }
 
-    return false;
+    return outcome;
   }
 
   playComputerTurn() {

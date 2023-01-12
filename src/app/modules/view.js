@@ -25,24 +25,29 @@ class View {
     }
   }
 
-  bindCells(handler) {
+  bindOpponentCells(handler) {
     for (const cell of this.elements.p2Board.children) {
       cell.addEventListener('click', (evt) => {
         const i = parseInt(evt.target.dataset.index, 10);
 
-        const opponent = handler(i);
-        const oppBoard = opponent.board.board;
+        const outcome = handler(i);
 
-        if (opponent) {
-          if (oppBoard[i].ship && oppBoard[i].isShot) {
-            cell.style.backgroundColor = 'green';
-          } else if (oppBoard[i].ship && opponent.name === 'p1') {
-            cell.style.backgroundColor = 'gray';
-          } else if (oppBoard[i].ship === null && oppBoard[i].isShot) {
-            cell.style.backgroundColor = 'red';
-          } else {
-            cell.style.backgroundColor = 'white';
-          }
+        const { opponent } = outcome.opponent;
+        const oppBoard = outcome.opponent.board.board;
+
+        if (oppBoard[i].ship && oppBoard[i].isShot) {
+          cell.style.backgroundColor = 'green';
+        } else if (oppBoard[i].ship && opponent.name === 'p1') {
+          cell.style.backgroundColor = 'gray';
+        } else if (oppBoard[i].ship === null && oppBoard[i].isShot) {
+          cell.style.backgroundColor = 'red';
+        } else {
+          console.log('Invalid move');
+          cell.style.backgroundColor = 'white';
+        }
+
+        if (outcome.winner) {
+          console.log('Player wins!');
         }
       });
     }

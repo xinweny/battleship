@@ -9,4 +9,5 @@ const view = new View();
 view.renderBoard(game.p1);
 view.renderBoard(game.p2);
 
-view.bindCells(game.playPlayerTurn.bind(game));
+view.bindOpponentCells(game.playPlayerTurn.bind(game));
+// view.bindPlayerCells();
