@@ -1,4 +1,8 @@
-import { createElement } from './helpers';
+import {
+  checkForWinner,
+  createElement,
+  getCellColor,
+} from './helpers';
 
 class View {
   constructor() {
@@ -25,32 +29,28 @@ class View {
     }
   }
 
-  bindOpponentCells(handler) {
-    for (const cell of this.elements.p2Board.children) {
+  bindOpponentCells(handler, player) {
+    const cells = (player.name === 'p1') ? this.elements.p2Board.children : this.elements.p1Board.children;
+
+    for (const cell of cells) {
       cell.addEventListener('click', (evt) => {
         const i = parseInt(evt.target.dataset.index, 10);
 
         const outcome = handler(i);
 
-        const { opponent } = outcome.opponent;
-        const oppBoard = outcome.opponent.board.board;
+        if (outcome.validMove && outcome.winner === null) {
+          cell.style.backgroundColor = getCellColor(outcome, i);
 
-        if (oppBoard[i].ship && oppBoard[i].isShot) {
-          cell.style.backgroundColor = 'green';
-        } else if (oppBoard[i].ship && opponent.name === 'p1') {
-          cell.style.backgroundColor = 'gray';
-        } else if (oppBoard[i].ship === null && oppBoard[i].isShot) {
-          cell.style.backgroundColor = 'red';
-        } else {
-          console.log('Invalid move');
-          cell.style.backgroundColor = 'white';
-        }
-
-        if (outcome.winner) {
-          console.log('Player wins!');
+          checkForWinner(outcome);
+        } else if (player.name === 'p1') {
+          console.log('Invalid move!');
         }
       });
     }
+  }
+
+  getCell(name, index) {
+    return this.elements[`${name}Board`].children[index];
   }
 }
 

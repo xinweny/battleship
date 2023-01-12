@@ -1,10 +1,13 @@
 import Player from '../models/Player';
+import View from './view';
 import AI from './AI';
 
 class Game {
   constructor() {
     this.p1 = new Player(); // Human player
     this.p2 = new Player(new AI()); // Computer
+
+    this.view = new View();
 
     this.turn = 'p1';
     this.winner = null;
@@ -47,21 +50,50 @@ class Game {
 
     if (!oppBoard.board[index].isShot) {
       outcome.validMove = true;
+
       this.p1.fireShot(this.p2, index);
 
       if (this.checkWin(oppBoard)) {
         outcome.winner = this.winner;
-        return outcome;
-      }
+      } else {
+        this.switchTurn();
 
-      this.switchTurn();
+        const nextIndex = this.p2.AI.getRandomShot(this.p1);
+        const cell = this.view.getCell('p1', nextIndex);
+        this.p2.AI.clickCell(cell);
+      }
     }
 
     return outcome;
   }
 
-  playComputerTurn() {
+  playComputerTurn(index) {
+    const outcome = {
+      validMove: false,
+      opponent: this.p1,
+      winner: null,
+    };
 
+    if (this.turn === 'p2') {
+      outcome.validMove = true;
+      this.p2.fireShot(this.p1, index);
+
+      if (this.checkWin(this.p1.board)) {
+        outcome.winner = this.winner;
+      } else {
+        this.switchTurn();
+      }
+    }
+
+    return outcome;
+  }
+
+  init() {
+    this.view.renderBoard(this.p1);
+    this.view.renderBoard(this.p2);
+
+    this.view.bindOpponentCells(this.playPlayerTurn.bind(this), this.p1);
+    this.view.bindOpponentCells(this.playComputerTurn.bind(this), this.p2);
   }
 }
 
