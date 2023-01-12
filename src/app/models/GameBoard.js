@@ -16,8 +16,6 @@ class GameBoard {
       submarine: new Ship(3, 'submarine'),
       patrolBoat: new Ship(2, 'patrolBoat'),
     };
-
-    this.misses = [];
   }
 
   placeShip(shipName, start, axis) {
@@ -48,11 +46,7 @@ class GameBoard {
 
       const { ship } = this.board[loc];
 
-      if (ship) {
-        this.ships[ship].hit();
-      } else {
-        this.misses.push(loc);
-      }
+      if (ship) this.ships[ship].hit();
     }
   }
 
