@@ -1,9 +1,12 @@
 import Game from './modules/game';
+import View from './modules/view';
 
 import '../styles/main.css';
 
 const game = new Game();
+const view = new View();
 
-game.renderBoards();
+view.renderBoard(game.p1);
+view.renderBoard(game.p2);
 
-game.play();
+view.bindCells(game.playPlayerTurn.bind(game));

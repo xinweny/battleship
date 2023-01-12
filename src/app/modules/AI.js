@@ -21,11 +21,7 @@ class AI {
         const loc = cells[Math.floor(Math.random() * cells.length)];
         const axis = axes[Math.floor(Math.random() * axes.length)];
 
-        const shipPlaced = this.board.placeShip(shipName, loc, axis);
-
-        if (shipPlaced) {
-          validPlacement = true;
-        }
+        validPlacement = this.board.placeShip(shipName, loc, axis);
       }
     });
   }
