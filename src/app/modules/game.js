@@ -17,7 +17,7 @@ class Game {
     this.p1.board.placeShip('battleship', 12, 'y');
     this.p1.board.placeShip('cruiser', 97, 'x');
     this.p1.board.placeShip('submarine', 66, 'y');
-    this.p1.board.placeShip('patrolBoat', 39, 'x');
+    this.p1.board.placeShip('patrolBoat', 38, 'x');
 
     // Place computer ships
     // computer.AI.placeShips();

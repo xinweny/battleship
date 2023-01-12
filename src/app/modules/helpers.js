@@ -1,13 +1,8 @@
 export function checkCollisions(locs, axis, board) {
   if (axis === 'x') {
     const locsStr = locs.map((loc) => loc.toString());
-    const firstLoc = locsStr[0];
 
-    if (firstLoc.length === 1) {
-      if (!(locsStr.every((loc) => loc.length === firstLoc.length))) return false;
-    } else if (!(locsStr.every((loc) => loc[0] === locsStr[0][0]))) {
-      return false;
-    }
+    if (locsStr.some((loc) => loc.slice(-1) === '9' && locsStr.indexOf(loc) !== (locsStr.length - 1))) return false;
   } else {
     for (const loc of locs) {
       if (loc > 99) return false;
