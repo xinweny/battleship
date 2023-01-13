@@ -26,7 +26,7 @@ describe('player tests', () => {
 
 describe('computer tests', () => {
   it('can make random, legal moves', () => {
-    const loc = computer.AI.getRandomShot(player);
+    const loc = computer.AI.getRandomShot();
     computer.fireShot(player, loc);
 
     expect(player.getCell(loc).isShot).toBe(true);

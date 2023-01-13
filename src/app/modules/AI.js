@@ -1,8 +1,11 @@
 class AI {
-  getRandomShot(opponent) {
-    const oppBoard = opponent.board;
-    const legalMoves = oppBoard.board.filter((cell) => !cell.isShot)
-      .map((cell) => oppBoard.board.indexOf(cell));
+  constructor() {
+    this.shots = [];
+    this.cells = [...Array(100).keys()];
+  }
+
+  getRandomShot() {
+    const legalMoves = this.cells.filter((index) => !this.shots.includes(index));
 
     const loc = legalMoves[Math.floor(Math.random() * legalMoves.length)];
 
@@ -11,13 +14,12 @@ class AI {
 
   placeShips() {
     const axes = ['x', 'y'];
-    const cells = [...Array(100).keys()];
 
     Object.keys(this.ships).forEach((shipName) => {
       let validPlacement = false;
 
       while (!validPlacement) {
-        const loc = cells[Math.floor(Math.random() * 100)];
+        const loc = this.cells[Math.floor(Math.random() * 100)];
         const axis = axes[Math.floor(Math.random() * 2)];
 
         validPlacement = this.board.placeShip(shipName, loc, axis);

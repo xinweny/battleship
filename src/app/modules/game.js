@@ -58,7 +58,7 @@ class Game {
       } else {
         this.switchTurn();
 
-        const nextIndex = this.p2.AI.getRandomShot(this.p1);
+        const nextIndex = this.p2.AI.getRandomShot();
         const cell = this.view.getCell('p1', nextIndex);
         this.p2.AI.clickCell(cell);
       }
