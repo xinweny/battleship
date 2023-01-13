@@ -41,6 +41,8 @@ class Game {
   }
 
   playPlayerTurn(index) {
+    if (this.winner != null) return false;
+
     const oppBoard = this.p2.board;
     const outcome = {
       validMove: false,
@@ -58,7 +60,7 @@ class Game {
       } else {
         this.switchTurn();
 
-        const nextIndex = this.p2.AI.getRandomShot();
+        const nextIndex = this.p2.AI.getSmartShot(this.p2.movesMade);
         const cell = this.view.getCell('p1', nextIndex);
         this.p2.AI.clickCell(cell);
       }
@@ -68,6 +70,8 @@ class Game {
   }
 
   playComputerTurn(index) {
+    if (this.winner != null) return false;
+
     const outcome = {
       validMove: false,
       opponent: this.p1,

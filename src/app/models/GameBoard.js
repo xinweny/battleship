@@ -49,9 +49,16 @@ class GameBoard {
     if (!this.board[loc].isShot) {
       this.board[loc].isShot = true;
 
-      moveInfo.target = this.board[loc].ship;
+      const target = this.board[loc].ship;
 
-      if (moveInfo.target) this.ships[moveInfo.target].hit();
+      if (target) {
+        const ship = this.ships[target];
+
+        moveInfo.target = ship;
+        ship.hit();
+      } else {
+        moveInfo.target = null;
+      }
     }
 
     return moveInfo;
@@ -71,6 +78,22 @@ class GameBoard {
     });
 
     return sunk;
+  }
+
+  placeShipsRandomly() {
+    const axes = ['x', 'y'];
+    const cells = [...Array(100).keys()];
+
+    Object.keys(this.ships).forEach((shipName) => {
+      let validPlacement = false;
+
+      while (!validPlacement) {
+        const loc = cells[Math.floor(Math.random() * 100)];
+        const axis = axes[Math.floor(Math.random() * 2)];
+
+        validPlacement = this.board.placeShip(shipName, loc, axis);
+      }
+    });
   }
 }
 

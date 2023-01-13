@@ -48,3 +48,13 @@ export function checkForWinner(outcome) {
     console.log(`${player} wins!`);
   }
 }
+
+export function randElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+export function getActiveShips(movesMade) {
+  const shipMoves = movesMade.filter((move) => move.target != null && !move.target.isSunk());
+
+  return (shipMoves.length > 0) ? [...new Set(shipMoves.map((move) => move.target))] : [];
+}

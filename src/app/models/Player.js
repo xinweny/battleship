@@ -5,6 +5,7 @@ class Player {
     this.board = new GameBoard();
     this.ships = this.board.ships;
     this.name = ai ? 'p2' : 'p1';
+    this.movesMade = [];
 
     if (ai) {
       this.AI = ai;
@@ -12,7 +13,10 @@ class Player {
   }
 
   fireShot(opponent, loc) {
-    return opponent.board.receiveAttack(loc);
+    const moveInfo = opponent.board.receiveAttack(loc);
+    this.movesMade.push(moveInfo);
+
+    return moveInfo;
   }
 
   getCell(loc) {

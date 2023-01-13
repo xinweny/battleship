@@ -38,7 +38,7 @@ class View {
 
         const outcome = handler(i);
 
-        if (outcome.validMove && outcome.winner === null) {
+        if (outcome && outcome.validMove) {
           cell.style.backgroundColor = getCellColor(outcome, i);
 
           checkForWinner(outcome);
