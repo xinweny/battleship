@@ -20,12 +20,7 @@ class Game {
     this.p1.board.placeShip('patrolBoat', 38, 'x');
 
     // Place computer ships
-    // computer.AI.placeShips();
-    this.p2.board.placeShip('carrier', 4, 'x');
-    this.p2.board.placeShip('battleship', 12, 'y');
-    this.p2.board.placeShip('cruiser', 97, 'x');
-    this.p2.board.placeShip('submarine', 66, 'y');
-    this.p2.board.placeShip('patrolBoat', 38, 'x');
+    this.p2.board.placeShipsRandomly();
   }
 
   switchTurn() {

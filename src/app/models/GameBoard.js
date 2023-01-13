@@ -91,7 +91,7 @@ class GameBoard {
         const loc = cells[Math.floor(Math.random() * 100)];
         const axis = axes[Math.floor(Math.random() * 2)];
 
-        validPlacement = this.board.placeShip(shipName, loc, axis);
+        validPlacement = this.placeShip(shipName, loc, axis);
       }
     });
   }
