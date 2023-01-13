@@ -12,7 +12,7 @@ class Player {
   }
 
   fireShot(opponent, loc) {
-    opponent.board.receiveAttack(loc);
+    return opponent.board.receiveAttack(loc);
   }
 
   getCell(loc) {

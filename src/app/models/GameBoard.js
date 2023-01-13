@@ -41,13 +41,20 @@ class GameBoard {
   }
 
   receiveAttack(loc) {
+    const moveInfo = {
+      target: null,
+      cell: loc,
+    };
+
     if (!this.board[loc].isShot) {
       this.board[loc].isShot = true;
 
-      const { ship } = this.board[loc];
+      moveInfo.target = this.board[loc].ship;
 
-      if (ship) this.ships[ship].hit();
+      if (moveInfo.target) this.ships[moveInfo.target].hit();
     }
+
+    return moveInfo;
   }
 
   shipAt(loc) {

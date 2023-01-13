@@ -2,6 +2,8 @@ class AI {
   constructor() {
     this.shotsMade = [];
     this.cells = [...Array(100).keys()];
+    this.prevShot = null;
+    this.shipsSunk = [];
   }
 
   getRandomShot() {
@@ -11,6 +13,14 @@ class AI {
     this.shotsMade.push(loc);
 
     return loc;
+  }
+
+  getSmartShot() {
+    if (this.prevShot === null) {
+      return this.getRandomShot(); // First shot is random
+    }
+
+    return null;
   }
 
   placeShips() {

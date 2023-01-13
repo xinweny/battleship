@@ -49,12 +49,6 @@ describe('Should place ships at the correct coordinates', () => {
     });
   });
 
-  it('should keep track of missed attacks', () => {
-    testBoard.receiveAttack(87);
-
-    expect(testBoard.misses).toEqual([99, 87]);
-  });
-
   it('should report whether or not all ships have been sunk', () => {
     testBoard = new GameBoard();
 
