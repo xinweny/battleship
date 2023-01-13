@@ -17,8 +17,8 @@ class AI {
       let validPlacement = false;
 
       while (!validPlacement) {
-        const loc = cells[Math.floor(Math.random() * cells.length)];
-        const axis = axes[Math.floor(Math.random() * axes.length)];
+        const loc = cells[Math.floor(Math.random() * 100)];
+        const axis = axes[Math.floor(Math.random() * 2)];
 
         validPlacement = this.board.placeShip(shipName, loc, axis);
       }
