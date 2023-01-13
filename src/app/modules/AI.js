@@ -1,13 +1,14 @@
 class AI {
   constructor() {
-    this.shots = [];
+    this.shotsMade = [];
     this.cells = [...Array(100).keys()];
   }
 
   getRandomShot() {
-    const legalMoves = this.cells.filter((index) => !this.shots.includes(index));
+    const legalMoves = this.cells.filter((index) => !this.shotsMade.includes(index));
 
     const loc = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+    this.shotsMade.push(loc);
 
     return loc;
   }
