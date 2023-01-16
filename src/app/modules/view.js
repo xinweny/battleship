@@ -9,6 +9,7 @@ class View {
     this.elements = {
       p1Board: document.getElementById('p1-board'),
       p2Board: document.getElementById('p2-board'),
+      gameMessage: document.getElementById('message-window'),
     };
   }
 
@@ -27,6 +28,12 @@ class View {
 
       grid.appendChild(cell);
     }
+  }
+
+  renderStartScreen() {
+    const startMessage = createElement('h2', 'start-message');
+    startMessage.innerText = 'Place your ships';
+    this.elements.gameMessage.appendChild(startMessage);
   }
 
   bindOpponentCells(handler, player) {

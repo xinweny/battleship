@@ -87,7 +87,11 @@ class Game {
     return outcome;
   }
 
-  init() {
+  setupGame() {
+    this.view.renderStartScreen();
+  }
+
+  startGame() {
     this.view.renderBoard(this.p1);
     this.view.renderBoard(this.p2);
 

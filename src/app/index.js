@@ -4,5 +4,5 @@ import '../styles/main.css';
 
 const game = new Game();
 
-game.init();
-// view.bindP1Cells();
+game.setupGame();
+game.startGame();
