@@ -2,7 +2,7 @@ import Player from '../models/Player';
 import View from './view';
 import AI from './AI';
 
-import { shipLengths } from './helpers';
+import { shipLengths, getNextShip } from './helpers';
 
 class Game {
   constructor() {
@@ -15,7 +15,9 @@ class Game {
     this.winner = null;
     this.placementState = {
       axis: 'x',
-      ship: 'carrier',
+      shipName: 'carrier',
+      validPlacement: false,
+      allShipsPlaced: false,
     };
 
     // Place player ships
@@ -99,28 +101,52 @@ class Game {
       boardState: this.p1.board.board,
     };
 
-    const shipLength = shipLengths[this.placementState.ship];
+    if (!this.placementState.allShipsPlaced) {
+      const shipLength = shipLengths[this.placementState.shipName];
 
-    const locs = [...Array(shipLength).keys()].map((n) => ((this.placementState.axis === 'x') ? i + n : i + (n * 10)));
+      const locs = [...Array(shipLength).keys()].map((n) => ((this.placementState.axis === 'x') ? i + n : i + (n * 10)));
 
-    const isValid = this.p1.board.checkCollisions(locs, this.placementState.axis);
+      const isValid = this.p1.board.checkCollisions(locs, this.placementState.axis);
 
-    if (isValid) {
-      outcome.valid = true;
-      outcome.viewLocs = locs;
-    } else if (this.placementState.axis === 'y') {
-      outcome.viewLocs = locs.filter((loc) => loc < 100);
-    } else {
-      const firstLoc = locs[0];
+      if (isValid) {
+        outcome.valid = true;
+        outcome.viewLocs = locs;
 
-      if (firstLoc < 10) {
-        outcome.viewLocs = locs.filter((loc) => loc < 10);
+        this.placementState.validPlacement = true;
+      } else if (this.placementState.axis === 'y') {
+        outcome.viewLocs = locs.filter((loc) => loc < 100);
       } else {
-        outcome.viewLocs = locs.filter((loc) => loc.toString()[0] === firstLoc.toString()[0]);
+        const firstLoc = locs[0];
+
+        if (firstLoc < 10) {
+          outcome.viewLocs = locs.filter((loc) => loc < 10);
+        } else {
+          outcome.viewLocs = locs.filter((loc) => loc.toString()[0] === firstLoc.toString()[0]);
+        }
       }
     }
 
     return outcome;
+  }
+
+  placeShip(index) {
+    const info = {};
+
+    this.p1.board.placeShip(this.placementState.shipName, index, this.placementState.axis);
+
+    info.board = this.p1.board.board;
+
+    if (this.p1.board.getShipsPlaced().length === 5) {
+      info.nextShip = null;
+      this.placementState.allShipsPlaced = true;
+      console.log(1);
+    } else {
+      const nextShip = getNextShip(this.placementState.shipName);
+      this.placementState.shipName = nextShip;
+      info.nextShip = nextShip;
+    }
+
+    return info;
   }
 
   togglePlacementAxis() {
@@ -133,9 +159,12 @@ class Game {
 
     this.view.bindMouseOverCell(this.checkValidPlacement.bind(this));
     this.view.bindPressSpaceKey(this.togglePlacementAxis.bind(this));
+    this.view.bindClickPlacementCell(this.placeShip.bind(this));
   }
 
   startGame() {
+    this.view.resetBoardEventListeners();
+
     this.view.renderBoard(this.p1);
     this.view.renderBoard(this.p2);
 

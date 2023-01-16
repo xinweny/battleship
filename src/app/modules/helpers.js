@@ -60,3 +60,13 @@ export const shipLengths = {
   submarine: 3,
   patrolBoat: 2,
 };
+
+export function getNextShip(currentShip) {
+  const shipNames = Object.keys(shipLengths);
+
+  const index = shipNames.indexOf(currentShip);
+
+  if (index < 4) return shipNames[index + 1];
+
+  return shipNames[index];
+}

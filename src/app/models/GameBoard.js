@@ -5,9 +5,7 @@ class GameBoard {
   constructor() {
     this.board = [];
 
-    for (let i = 0; i < 100; i += 1) {
-      this.board.push({ ship: null, isShot: false });
-    }
+    this.resetBoard();
 
     this.ships = {
       carrier: new Ship(5, 'carrier'),
@@ -20,6 +18,7 @@ class GameBoard {
 
   placeShip(shipName, start, axis) {
     const ship = this.ships[shipName];
+    ship.place();
 
     const locs = [...Array(ship.length).keys()].map((n) => ((axis === 'x') ? start + n : start + (n * 10)));
 
@@ -34,6 +33,16 @@ class GameBoard {
     }
 
     return false;
+  }
+
+  getShipsPlaced() {
+    return Object.keys(this.ships).filter((ship) => this.ships[ship].isPlaced);
+  }
+
+  resetBoard() {
+    for (let i = 0; i < 100; i += 1) {
+      this.board.push({ ship: null, isShot: false });
+    }
   }
 
   isShotHit(loc) {

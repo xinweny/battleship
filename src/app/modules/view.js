@@ -33,9 +33,7 @@ class View {
   }
 
   renderStartScreen() {
-    const startMessage = createElement('h2', 'start-message');
-    startMessage.innerText = 'Place your carrier (Press space to rotate)';
-    this.elements.gameMessage.appendChild(startMessage);
+    this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate)';
 
     const gameButtons = createElement('div', 'game-buttons');
 
@@ -63,18 +61,20 @@ class View {
 
         const outcome = handler(i);
 
-        const cellColor = (outcome.valid) ? 'green' : 'red';
+        if (outcome.viewLocs) {
+          const cellColor = (outcome.valid) ? 'green' : 'red';
 
-        for (const boardCell of outcome.boardState) {
-          const index = outcome.boardState.indexOf(boardCell);
-          const viewCell = this.elements.p1Board.querySelector(`.cell[data-index="${index}"]`);
+          for (const boardCell of outcome.boardState) {
+            const index = outcome.boardState.indexOf(boardCell);
+            const viewCell = this.elements.p1Board.querySelector(`.cell[data-index="${index}"]`);
 
-          if (outcome.viewLocs.includes(index)) {
-            viewCell.style.backgroundColor = cellColor;
-          } else if (boardCell.ship) {
-            viewCell.style.backgroundColor = 'gray';
-          } else {
-            viewCell.style.backgroundColor = 'white';
+            if (outcome.viewLocs.includes(index)) {
+              viewCell.style.backgroundColor = cellColor;
+            } else if (boardCell.ship) {
+              viewCell.style.backgroundColor = 'gray';
+            } else {
+              viewCell.style.backgroundColor = 'white';
+            }
           }
         }
       });
@@ -91,6 +91,28 @@ class View {
 
           const mouseoverEvent = new Event('mouseover');
           cell.dispatchEvent(mouseoverEvent);
+        }
+      }
+    });
+  }
+
+  bindClickPlacementCell(handler) {
+    this.elements.p1Board.addEventListener('click', (evt) => {
+      const index = parseInt(evt.target.dataset.index, 10);
+      const clickedCell = this.elements.p1Board.children[index];
+
+      if (clickedCell.style.backgroundColor === 'green') {
+        const info = handler(index);
+
+        for (let i = 0; i < 100; i += 1) {
+          const cell = this.elements.p1Board.children[i];
+          cell.style.backgroundColor = (info.board[i].ship == null) ? 'white' : 'gray';
+        }
+
+        if (info.nextShip != null) {
+          this.elements.gameMessage.innerText = `Place your ${info.nextShip} (Press space to rotate)`;
+        } else {
+          // Render start button
         }
       }
     });
@@ -116,8 +138,11 @@ class View {
     }
   }
 
-  getCell(name, index) {
-    return this.elements[`${name}Board`].children[index];
+  resetBoardEventListeners() {
+    const p1Board = this.elements.p1Board.cloneNode(true);
+    this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
+
+    this.elements.p1Board = p1Board;
   }
 }
 
