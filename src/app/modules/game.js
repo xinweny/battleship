@@ -5,7 +5,7 @@ import AI from './AI';
 class Game {
   constructor() {
     this.p1 = new Player(); // Human player
-    this.p2 = new Player(new AI()); // Computer
+    this.p2 = new Player(new AI(this.p1.board.board)); // Computer
 
     this.view = new View();
 

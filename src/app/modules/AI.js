@@ -1,10 +1,12 @@
 import {
   randElement,
   getActiveShips,
+  shipLengths,
+  checkCollisionsAI,
 } from './helpers';
 
 class AI {
-  constructor() {
+  constructor(oppBoard) {
     this.cellsHit = {
       carrier: [],
       battleship: [],
@@ -13,7 +15,7 @@ class AI {
       patrolBoat: [],
     };
 
-    this.modelOppBoard = Array(100).fill(null);
+    this.oppBoard = oppBoard;
     this.offsets = [-1, 1, -10, 10];
   }
 
@@ -35,9 +37,7 @@ class AI {
     const prevMove = movesMade.slice(-1)[0];
     const prevCell = prevMove.cell;
 
-    const ship = prevMove.target;
-
-    this.modelOppBoard[prevCell] = prevMove;
+    const { ship } = prevMove;
 
     if (ship && !ship.isSunk()) {
       // If previous move hit a ship that is not sunk, update cellsHit to remember the move
@@ -54,12 +54,17 @@ class AI {
         // Repeat searching algorithm above
         loc = this.findSuitableMoves(prevShip);
       } else {
-        // Otherwise make random move
-        loc = this.getRandomShot(movesMade);
+        // Otherwise make smart guess
+        const hiddenShipLengths = this.getUndiscoveredShipLengths();
+        const shipLength = randElement(hiddenShipLengths); // Pick random undiscovered ship
+
+        // Get all valid placements on the board for that ship
+        const validLocs = this.modelValidPlacements(shipLength);
+
+        // Pick random element of randomly selected location array
+        loc = randElement(randElement(validLocs));
       }
     }
-
-    console.log(`loc: ${loc}`);
 
     return loc;
   }
@@ -100,12 +105,32 @@ class AI {
     return randElement(validNextMoves); // Select random next valid move
   }
 
+  modelValidPlacements(length) {
+    const validLocs = [];
+
+    const emptyLocs = this.getEmptyLocs();
+
+    // Check
+    for (const emptyLoc of emptyLocs) {
+      for (const offset of [1, 10]) {
+        const locs = [...Array(length).keys()].map((i) => emptyLoc + (offset * i));
+
+        if (checkCollisionsAI(locs, offset, this.oppBoard)) validLocs.push(locs);
+      }
+    }
+
+    return validLocs;
+  }
+
   checkValidMove(start, offset) {
     const end = start + offset;
-    const lastStartDigit = start.toString().slice(-1)[0];
+
+    if (end < 0 || end > 99) return false;
 
     // Check if move has already been made
-    if (this.modelOppBoard[end] !== null) return false;
+    if (this.oppBoard[end].isShot) return false;
+
+    const lastStartDigit = start.toString().slice(-1)[0];
 
     // Check edge collision
     if (offset === -1) return !(lastStartDigit === '0'); // left
@@ -118,6 +143,23 @@ class AI {
 
   clickCell(cell) {
     cell.click();
+  }
+
+  getUndiscoveredShipLengths() {
+    const hiddenShipLengths = [];
+
+    Object.keys(this.cellsHit).forEach((shipName) => {
+      const shipLength = shipLengths[shipName];
+
+      if (this.cellsHit[shipName].length === 0) hiddenShipLengths.push(shipLength);
+    });
+
+    return hiddenShipLengths;
+  }
+
+  getEmptyLocs() {
+    return this.oppBoard.filter((cell) => !cell.isShot)
+      .map((cell) => this.oppBoard.indexOf(cell));
   }
 }
 

@@ -42,7 +42,7 @@ class GameBoard {
 
   receiveAttack(loc) {
     const moveInfo = {
-      target: null,
+      ship: null,
       cell: loc,
     };
 
@@ -54,10 +54,10 @@ class GameBoard {
       if (target) {
         const ship = this.ships[target];
 
-        moveInfo.target = ship;
+        moveInfo.ship = ship;
         ship.hit();
       } else {
-        moveInfo.target = null;
+        moveInfo.ship = null;
       }
     }
 

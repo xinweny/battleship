@@ -1,5 +1,5 @@
-export function checkCollisions(locs, axis, board) {
-  if (axis === 'x') {
+function checkEdgeCollisions(locs, axis) {
+  if (axis === 'x' || axis === 1) {
     const locsStr = locs.map((loc) => loc.toString());
 
     if (locsStr.some((loc) => loc.slice(-1) === '9' && locsStr.indexOf(loc) !== (locsStr.length - 1))) return false;
@@ -9,10 +9,24 @@ export function checkCollisions(locs, axis, board) {
     }
   }
 
+  return true;
+}
+
+export function checkCollisions(locs, axis, board) {
+  if (!checkEdgeCollisions(locs, axis)) return false;
+
   for (const loc of locs) {
-    if (board[loc].ship != null) {
-      return false;
-    }
+    if (board[loc].ship != null) return false;
+  }
+
+  return true;
+}
+
+export function checkCollisionsAI(locs, axis, board) {
+  if (!checkEdgeCollisions(locs, axis)) return false;
+
+  for (const loc of locs) {
+    if (board[loc].isShot) return false;
   }
 
   return true;
@@ -54,7 +68,15 @@ export function randElement(arr) {
 }
 
 export function getActiveShips(movesMade) {
-  const shipMoves = movesMade.filter((move) => move.target != null && !move.target.isSunk());
+  const shipMoves = movesMade.filter((move) => move.ship != null && !move.ship.isSunk());
 
-  return (shipMoves.length > 0) ? [...new Set(shipMoves.map((move) => move.target))] : [];
+  return (shipMoves.length > 0) ? [...new Set(shipMoves.map((move) => move.ship))] : [];
 }
+
+export const shipLengths = {
+  carrier: 5,
+  battleship: 4,
+  cruiser: 3,
+  submarine: 3,
+  patrolBoat: 2,
+};
