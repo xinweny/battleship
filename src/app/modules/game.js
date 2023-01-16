@@ -2,6 +2,8 @@ import Player from '../models/Player';
 import View from './view';
 import AI from './AI';
 
+import { shipLengths } from './helpers';
+
 class Game {
   constructor() {
     this.p1 = new Player(); // Human player
@@ -11,13 +13,17 @@ class Game {
 
     this.turn = 'p1';
     this.winner = null;
+    this.placementState = {
+      axis: 'x',
+      ship: 'carrier',
+    };
 
     // Place player ships
-    this.p1.board.placeShip('carrier', 4, 'x');
-    this.p1.board.placeShip('battleship', 12, 'y');
-    this.p1.board.placeShip('cruiser', 97, 'x');
-    this.p1.board.placeShip('submarine', 66, 'y');
-    this.p1.board.placeShip('patrolBoat', 38, 'x');
+    // this.p1.board.placeShip('carrier', 4, 'x');
+    // this.p1.board.placeShip('battleship', 12, 'y');
+    // this.p1.board.placeShip('cruiser', 97, 'x');
+    // this.p1.board.placeShip('submarine', 66, 'y');
+    // this.p1.board.placeShip('patrolBoat', 38, 'x');
 
     // Place computer ships
     this.p2.board.placeShipsRandomly();
@@ -87,16 +93,54 @@ class Game {
     return outcome;
   }
 
+  checkValidPlacement(i) {
+    const outcome = {
+      valid: false,
+      boardState: this.p1.board.board,
+    };
+
+    const shipLength = shipLengths[this.placementState.ship];
+
+    const locs = [...Array(shipLength).keys()].map((n) => ((this.placementState.axis === 'x') ? i + n : i + (n * 10)));
+
+    const isValid = this.p1.board.checkCollisions(locs, this.placementState.axis);
+
+    if (isValid) {
+      outcome.valid = true;
+      outcome.viewLocs = locs;
+    } else if (this.placementState.axis === 'y') {
+      outcome.viewLocs = locs.filter((loc) => loc < 100);
+    } else {
+      const firstLoc = locs[0];
+
+      if (firstLoc < 10) {
+        outcome.viewLocs = locs.filter((loc) => loc < 10);
+      } else {
+        outcome.viewLocs = locs.filter((loc) => loc.toString()[0] === firstLoc.toString()[0]);
+      }
+    }
+
+    return outcome;
+  }
+
+  togglePlacementAxis() {
+    this.placementState.axis = (this.placementState.axis === 'x') ? 'y' : 'x';
+  }
+
   setupGame() {
+    this.view.renderBoard(this.p1);
     this.view.renderStartScreen();
+
+    this.view.bindMouseOverCell(this.checkValidPlacement.bind(this));
+    this.view.bindPressSpaceKey(this.togglePlacementAxis.bind(this));
   }
 
   startGame() {
     this.view.renderBoard(this.p1);
     this.view.renderBoard(this.p2);
 
-    this.view.bindOpponentCells(this.playPlayerTurn.bind(this), this.p1);
-    this.view.bindOpponentCells(this.playComputerTurn.bind(this), this.p2);
+    this.view.bindClickOpponentCell(this.playPlayerTurn.bind(this), this.p1);
+    this.view.bindClickOpponentCell(this.playComputerTurn.bind(this), this.p2);
   }
 }
 

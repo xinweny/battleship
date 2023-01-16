@@ -7,6 +7,8 @@ import {
 class View {
   constructor() {
     this.elements = {
+      p1GameWindow: document.getElementById('p1-window'),
+      p2GameWindow: document.getElementById('p2-window'),
       p1Board: document.getElementById('p1-board'),
       p2Board: document.getElementById('p2-board'),
       gameMessage: document.getElementById('message-window'),
@@ -32,11 +34,69 @@ class View {
 
   renderStartScreen() {
     const startMessage = createElement('h2', 'start-message');
-    startMessage.innerText = 'Place your ships';
+    startMessage.innerText = 'Place your carrier (Press space to rotate)';
     this.elements.gameMessage.appendChild(startMessage);
+
+    const gameButtons = createElement('div', 'game-buttons');
+
+    const randomButton = createElement('button', 'random-button');
+    randomButton.innerText = 'Random';
+    const resetButton = createElement('button', 'reset-button');
+    resetButton.innerText = 'Reset';
+    const startButton = createElement('button', 'start-button');
+    startButton.innerText = 'Start';
+
+    gameButtons.appendChild(randomButton);
+    gameButtons.appendChild(resetButton);
+    gameButtons.appendChild(startButton);
+
+    this.elements.p1GameWindow.appendChild(gameButtons);
+    this.elements.p2GameWindow.style.display = 'none';
   }
 
-  bindOpponentCells(handler, player) {
+  bindMouseOverCell(handler) {
+    const cells = this.elements.p1Board.children;
+
+    for (const cell of cells) {
+      cell.addEventListener('mouseover', (evt) => {
+        const i = parseInt(evt.target.dataset.index, 10);
+
+        const outcome = handler(i);
+
+        const cellColor = (outcome.valid) ? 'green' : 'red';
+
+        for (const boardCell of outcome.boardState) {
+          const index = outcome.boardState.indexOf(boardCell);
+          const viewCell = this.elements.p1Board.querySelector(`.cell[data-index="${index}"]`);
+
+          if (outcome.viewLocs.includes(index)) {
+            viewCell.style.backgroundColor = cellColor;
+          } else if (boardCell.ship) {
+            viewCell.style.backgroundColor = 'gray';
+          } else {
+            viewCell.style.backgroundColor = 'white';
+          }
+        }
+      });
+    }
+  }
+
+  bindPressSpaceKey(handler) {
+    document.addEventListener('keyup', (evt) => {
+      if (evt.code === 'Space') {
+        const cell = [...document.querySelectorAll(':hover')].slice(-1)[0];
+
+        if (cell.classList.contains('cell')) {
+          handler();
+
+          const mouseoverEvent = new Event('mouseover');
+          cell.dispatchEvent(mouseoverEvent);
+        }
+      }
+    });
+  }
+
+  bindClickOpponentCell(handler, player) {
     const cells = (player.name === 'p1') ? this.elements.p2Board.children : this.elements.p1Board.children;
 
     for (const cell of cells) {

@@ -2,7 +2,7 @@ import {
   randElement,
   getActiveShips,
   shipLengths,
-  checkCollisionsAI,
+  checkEdgeCollisions,
 } from './helpers';
 
 class AI {
@@ -115,7 +115,7 @@ class AI {
       for (const offset of [1, 10]) {
         const locs = [...Array(length).keys()].map((i) => emptyLoc + (offset * i));
 
-        if (checkCollisionsAI(locs, offset, this.oppBoard)) validLocs.push(locs);
+        if (this.checkCollisions(locs, offset, this.oppBoard)) validLocs.push(locs);
       }
     }
 
@@ -160,6 +160,16 @@ class AI {
   getEmptyLocs() {
     return this.oppBoard.filter((cell) => !cell.isShot)
       .map((cell) => this.oppBoard.indexOf(cell));
+  }
+
+  checkCollisions(locs, axis) {
+    if (!checkEdgeCollisions(locs, axis)) return false;
+
+    for (const loc of locs) {
+      if (this.oppBoard[loc].isShot) return false;
+    }
+
+    return true;
   }
 }
 

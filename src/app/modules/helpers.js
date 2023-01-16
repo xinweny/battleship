@@ -1,4 +1,4 @@
-function checkEdgeCollisions(locs, axis) {
+export function checkEdgeCollisions(locs, axis) {
   if (axis === 'x' || axis === 1) {
     const locsStr = locs.map((loc) => loc.toString());
 
@@ -7,26 +7,6 @@ function checkEdgeCollisions(locs, axis) {
     for (const loc of locs) {
       if (loc > 99) return false;
     }
-  }
-
-  return true;
-}
-
-export function checkCollisions(locs, axis, board) {
-  if (!checkEdgeCollisions(locs, axis)) return false;
-
-  for (const loc of locs) {
-    if (board[loc].ship != null) return false;
-  }
-
-  return true;
-}
-
-export function checkCollisionsAI(locs, axis, board) {
-  if (!checkEdgeCollisions(locs, axis)) return false;
-
-  for (const loc of locs) {
-    if (board[loc].isShot) return false;
   }
 
   return true;

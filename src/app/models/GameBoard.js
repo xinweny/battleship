@@ -1,5 +1,5 @@
 const Ship = require('./Ship');
-const { checkCollisions } = require('../modules/helpers');
+const { checkEdgeCollisions } = require('../modules/helpers');
 
 class GameBoard {
   constructor() {
@@ -23,7 +23,7 @@ class GameBoard {
 
     const locs = [...Array(ship.length).keys()].map((n) => ((axis === 'x') ? start + n : start + (n * 10)));
 
-    const isValid = checkCollisions(locs, axis, this.board);
+    const isValid = this.checkCollisions(locs, axis, this.board);
 
     if (isValid) {
       for (const loc of locs) {
@@ -94,6 +94,16 @@ class GameBoard {
         validPlacement = this.placeShip(shipName, loc, axis);
       }
     });
+  }
+
+  checkCollisions(locs, axis) {
+    if (!checkEdgeCollisions(locs, axis)) return false;
+
+    for (const loc of locs) {
+      if (this.board[loc].ship != null) return false;
+    }
+
+    return true;
   }
 }
 
