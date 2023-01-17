@@ -32,6 +32,13 @@ class View {
     }
   }
 
+  colorBoard(board) {
+    for (let i = 0; i < 100; i += 1) {
+      const cell = this.elements.p1Board.children[i];
+      cell.style.backgroundColor = (board[i].ship == null) ? 'white' : 'gray';
+    }
+  }
+
   renderStartScreen() {
     this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate)';
 
@@ -47,6 +54,10 @@ class View {
     gameButtons.appendChild(randomButton);
     gameButtons.appendChild(resetButton);
     gameButtons.appendChild(startButton);
+
+    this.elements.randomButton = randomButton;
+    this.elements.resetButton = resetButton;
+    this.elements.startButton = startButton;
 
     this.elements.p1GameWindow.appendChild(gameButtons);
     this.elements.p2GameWindow.style.display = 'none';
@@ -104,10 +115,7 @@ class View {
       if (clickedCell.style.backgroundColor === 'green') {
         const info = handler(index);
 
-        for (let i = 0; i < 100; i += 1) {
-          const cell = this.elements.p1Board.children[i];
-          cell.style.backgroundColor = (info.board[i].ship == null) ? 'white' : 'gray';
-        }
+        this.colorBoard(info.board);
 
         if (info.nextShip != null) {
           this.elements.gameMessage.innerText = `Place your ${info.nextShip} (Press space to rotate)`;
@@ -143,6 +151,14 @@ class View {
     this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
 
     this.elements.p1Board = p1Board;
+  }
+
+  bindClickRandomButton(handler) {
+    this.elements.randomButton.addEventListener('click', () => {
+      const board = handler();
+
+      this.colorBoard(board);
+    });
   }
 }
 

@@ -153,6 +153,15 @@ class Game {
     this.placementState.axis = (this.placementState.axis === 'x') ? 'y' : 'x';
   }
 
+  randomizePlayerShips() {
+    this.p1.board.resetBoard();
+    this.p1.board.placeShipsRandomly();
+
+    console.log(this.p1.board.board);
+
+    return this.p1.board.board;
+  }
+
   setupGame() {
     this.view.renderBoard(this.p1);
     this.view.renderStartScreen();
@@ -160,6 +169,8 @@ class Game {
     this.view.bindMouseOverCell(this.checkValidPlacement.bind(this));
     this.view.bindPressSpaceKey(this.togglePlacementAxis.bind(this));
     this.view.bindClickPlacementCell(this.placeShip.bind(this));
+
+    this.view.bindClickRandomButton(this.randomizePlayerShips.bind(this));
   }
 
   startGame() {

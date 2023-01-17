@@ -40,6 +40,8 @@ class GameBoard {
   }
 
   resetBoard() {
+    this.board = [];
+
     for (let i = 0; i < 100; i += 1) {
       this.board.push({ ship: null, isShot: false });
     }
