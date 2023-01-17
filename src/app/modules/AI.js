@@ -161,17 +161,16 @@ class AI {
   }
 
   findValidProjection(start, offset, l) {
-    let validMoveFound = false;
     let length = l;
 
     // project ship onto valid adjacent left/right/up/down cells at each edge
-    while (!validMoveFound && length > 0) {
-      const projectedLocs = projectShipLocs(start, offset, l, 1);
+    while (length > 0) {
+      const projectedLocs = projectShipLocs(start, offset, length, 1);
+      const check = this.checkCollisions(projectedLocs, offset);
 
-      if (this.checkCollisions(projectedLocs, offset)) {
-        validMoveFound = true;
-        return start + offset;
-      }
+      console.log(projectedLocs, check);
+
+      if (check) return start + offset;
 
       // If no valid moves found for the projection, reduce projected size
       length -= 1;
