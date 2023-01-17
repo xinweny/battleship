@@ -36,13 +36,6 @@ export function getCellColor(outcome, i) {
   return color;
 }
 
-export function checkForWinner(outcome) {
-  if (outcome.winner) {
-    const player = (outcome.opponent.name === 'p1') ? 'Computer' : 'Player';
-    console.log(`${player} wins!`);
-  }
-}
-
 export function randElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }

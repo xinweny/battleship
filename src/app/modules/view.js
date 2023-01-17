@@ -1,5 +1,4 @@
 import {
-  checkForWinner,
   createElement,
   getCellColor,
 } from './helpers';
@@ -47,8 +46,16 @@ class View {
     }
   }
 
+  setGameMessage(text) {
+    this.elements.gameMessage.innerHTML = '';
+
+    const message = createElement('p', 'game-message');
+    message.innerText = text;
+    this.elements.gameMessage.appendChild(message);
+  }
+
   renderStartScreen() {
-    this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate)';
+    this.setGameMessage('Place your carrier (Press space to rotate)');
 
     const gameButtons = createElement('div', 'game-buttons');
 
@@ -127,8 +134,10 @@ class View {
 
         this.colorBoard(info.board);
 
-        if (info.nextShip != null) {
-          this.elements.gameMessage.innerText = `Place your ${info.nextShip} (Press space to rotate)`;
+        const nextShip = (info.nextShip === 'patrolBoat') ? 'patrol boat' : info.nextShip;
+
+        if (nextShip != null) {
+          this.setGameMessage(`Place your ${nextShip} (Press space to rotate)`);
         } else {
           this.renderStartButton();
         }
@@ -148,9 +157,12 @@ class View {
         if (outcome && outcome.validMove) {
           cell.style.backgroundColor = getCellColor(outcome, i);
 
-          checkForWinner(outcome);
+          if (outcome.winner) {
+            const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
+            this.setGameMessage(message);
+          }
         } else if (player.name === 'p1') {
-          console.log('Invalid move!');
+          this.setGameMessage('You already shot at that cell.');
         }
       });
     }
@@ -171,13 +183,17 @@ class View {
       const board = handler();
 
       this.colorBoard(board);
-      this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate)';
+
+      this.setGameMessage('Place your carrier (Press space to rotate)');
     });
   }
 
   bindClickStartButton(handler) {
     this.elements.startButton.addEventListener('click', () => {
       handler();
+
+      this.elements.gameMessage.innerHTML = '';
+      this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
     });
   }
 
