@@ -56,7 +56,7 @@ class Game {
         this.switchTurn();
 
         const nextIndex = this.p2.AI.getSmartShot(this.p2.movesMade);
-        const cell = this.view.getCell('p1', nextIndex);
+        const cell = this.view.getCell(this.p1.name, nextIndex);
         this.p2.AI.clickCell(cell);
       }
     }
@@ -170,6 +170,7 @@ class Game {
 
     this.view.bindClickRandomButton(this.randomizePlayerShips.bind(this));
     this.view.bindClickResetButton(this.resetPlayerBoard.bind(this));
+    this.view.bindClickStartButton(this.startGame.bind(this));
   }
 
   startGame() {

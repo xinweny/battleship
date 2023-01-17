@@ -6,17 +6,25 @@ import {
 
 class View {
   constructor() {
+    const startButton = createElement('button', 'start-button');
+    startButton.innerText = 'Start';
+
     this.elements = {
       p1GameWindow: document.getElementById('p1-window'),
       p2GameWindow: document.getElementById('p2-window'),
       p1Board: document.getElementById('p1-board'),
       p2Board: document.getElementById('p2-board'),
       gameMessage: document.getElementById('message-window'),
+
+      startButton,
     };
   }
 
   renderBoard(player) {
     const grid = document.getElementById(`${player.name}-board`);
+
+    grid.innerHTML = '';
+    this.elements[`${player.name}GameWindow`].style.display = 'block';
 
     const { board } = player.board;
 
@@ -62,10 +70,7 @@ class View {
   renderStartButton() {
     this.elements.gameMessage.innerText = '';
 
-    const startButton = createElement('button', 'start-button');
-    startButton.innerText = 'Start';
-    this.elements.gameMessage.appendChild(startButton);
-    this.elements.startButton = startButton;
+    this.elements.gameMessage.appendChild(this.elements.startButton);
   }
 
   bindMouseOverCell(handler) {
@@ -170,11 +175,23 @@ class View {
     });
   }
 
+  bindClickStartButton(handler) {
+    this.elements.startButton.addEventListener('click', () => {
+      handler();
+    });
+  }
+
   resetBoardEventListeners() {
     const p1Board = this.elements.p1Board.cloneNode(true);
     this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
 
     this.elements.p1Board = p1Board;
+  }
+
+  getCell(playerName, index) {
+    const board = this.elements[`${playerName}Board`];
+
+    return board.children[index];
   }
 }
 
