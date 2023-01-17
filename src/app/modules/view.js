@@ -48,19 +48,24 @@ class View {
     randomButton.innerText = 'Random';
     const resetButton = createElement('button', 'reset-button');
     resetButton.innerText = 'Reset';
-    const startButton = createElement('button', 'start-button');
-    startButton.innerText = 'Start';
 
     gameButtons.appendChild(randomButton);
     gameButtons.appendChild(resetButton);
-    gameButtons.appendChild(startButton);
 
     this.elements.randomButton = randomButton;
     this.elements.resetButton = resetButton;
-    this.elements.startButton = startButton;
 
     this.elements.p1GameWindow.appendChild(gameButtons);
     this.elements.p2GameWindow.style.display = 'none';
+  }
+
+  renderStartButton() {
+    this.elements.gameMessage.innerText = '';
+
+    const startButton = createElement('button', 'start-button');
+    startButton.innerText = 'Start';
+    this.elements.gameMessage.appendChild(startButton);
+    this.elements.startButton = startButton;
   }
 
   bindMouseOverCell(handler) {
@@ -120,7 +125,7 @@ class View {
         if (info.nextShip != null) {
           this.elements.gameMessage.innerText = `Place your ${info.nextShip} (Press space to rotate)`;
         } else {
-          // Render start button
+          this.renderStartButton();
         }
       }
     });
@@ -146,18 +151,13 @@ class View {
     }
   }
 
-  resetBoardEventListeners() {
-    const p1Board = this.elements.p1Board.cloneNode(true);
-    this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
-
-    this.elements.p1Board = p1Board;
-  }
-
   bindClickRandomButton(handler) {
     this.elements.randomButton.addEventListener('click', () => {
       const board = handler();
 
       this.colorBoard(board);
+
+      this.renderStartButton();
     });
   }
 
@@ -166,8 +166,15 @@ class View {
       const board = handler();
 
       this.colorBoard(board);
-      this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate';
+      this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate)';
     });
+  }
+
+  resetBoardEventListeners() {
+    const p1Board = this.elements.p1Board.cloneNode(true);
+    this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
+
+    this.elements.p1Board = p1Board;
   }
 }
 
