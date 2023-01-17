@@ -1,8 +1,1 @@
-@import './game-board.css';
-
-#game-window {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	flex-wrap: wrap;
-}
+@import './game-window.css';

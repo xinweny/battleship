@@ -54,15 +54,15 @@ class Game {
 
       this.p1.fireShot(this.p2, index);
 
-      if (this.checkWin(oppBoard)) {
-        outcome.winner = this.winner;
-      } else {
+      if (!this.checkWin(oppBoard)) {
         this.switchTurn();
 
         const nextIndex = this.p2.AI.getSmartShot(this.p2.movesMade);
         const cell = this.view.getCell(this.p1.name, nextIndex);
         this.p2.AI.clickCell(nextIndex, cell);
       }
+
+      outcome.winner = this.winner;
     }
 
     return outcome;
@@ -181,7 +181,10 @@ class Game {
     this.view.resetBoardEventListeners(this.p1.name);
 
     this.view.renderBoard(this.p1);
+    this.view.renderBoardInfo(this.p1);
+
     this.view.renderBoard(this.p2);
+    this.view.renderBoardInfo(this.p2);
 
     this.view.bindClickOpponentCell(this.playPlayerTurn.bind(this), this.p1);
     this.view.bindClickOpponentCell(this.playComputerTurn.bind(this), this.p2);

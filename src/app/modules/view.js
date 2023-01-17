@@ -7,7 +7,7 @@ class View {
     const startButton = createElement('button', 'start-button');
     startButton.innerText = 'Start';
 
-    const restartButton = createElement('button', '.restart-button');
+    const restartButton = createElement('button', 'restart-button');
     restartButton.innerText = 'Restart';
 
     this.elements = {
@@ -81,6 +81,28 @@ class View {
     if (reset) this.elements.gameMessage.innerHTML = '';
 
     this.elements.gameMessage.appendChild(element);
+  }
+
+  renderBoardInfo(player) {
+    const boardInfo = createElement('div', 'board-info');
+    boardInfo.id = `${player.name}-board-info`;
+
+    const { ships } = player;
+
+    Object.keys(ships).forEach((ship) => {
+      const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
+
+      const shipText = createElement('p', 'ship-name');
+      shipText.innerText = shipName;
+
+      boardInfo.appendChild(shipText);
+    });
+
+    Object.keys(ships).forEach(() => {
+
+    });
+
+    this.elements[`${player.name}GameWindow`].appendChild(boardInfo);
   }
 
   bindMouseOverCell(handler) {
@@ -163,22 +185,20 @@ class View {
 
           if (ship && oppBoard[i].isShot) {
             cell.style.backgroundColor = 'green';
-            const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
 
+            const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
             this.setGameMessage(`You hit the ${shipName}.`);
+
+            if (outcome.winner) {
+              const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
+              this.setGameMessage(message);
+
+              this.renderInGameMessage(this.elements.restartButton);
+              this.resetBoardEventListeners('p2');
+            }
           } else {
             cell.style.backgroundColor = 'red';
-            this.setGameMessage('You missed!');
-          }
-
-          if (outcome.winner) {
-            const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
-            this.setGameMessage(message);
-
-            this.renderInGameMessage(this.elements.restartButton);
-            this.resetBoardEventListeners('p2');
-          } else if (player.name === 'p1') {
-            // Show shots, hits, misses etc.
+            if (!outcome.winner) this.setGameMessage('You missed!');
           }
         } else if (player.name === 'p1' && !outcome.winner) {
           this.setGameMessage('You already shot at that cell.');
@@ -209,15 +229,20 @@ class View {
 
   bindClickStartButton(handler) {
     this.elements.startButton.addEventListener('click', () => {
+      this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
+
       handler();
 
-      this.setGameMessage("Click on your opponent's board to fire shots.");
-      this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
+      this.setGameMessage('Click to fire shots.');
     });
   }
 
   bindClickRestartButton(handler) {
     this.elements.restartButton.addEventListener('click', () => {
+      for (const window of [this.elements.p1GameWindow, this.elements.p2GameWindow]) {
+        window.removeChild(window.lastChild);
+      }
+
       handler();
     });
   }
