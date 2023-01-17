@@ -82,9 +82,19 @@ class AI {
       const cell = shipCellsHit[0];
 
       for (const offset of this.offsets) {
-        const projectedLocs = projectShipLocs(cell, offset, ship.length - 1, 1);
+        let validMoveFound = false;
+        let hitsLeft = ship.length - 1;
 
-        if (this.checkCollisions(projectedLocs, offset)) validNextMoves.push(cell + offset);
+        while (!validMoveFound && hitsLeft > 0) {
+          const projectedLocs = projectShipLocs(cell, offset, hitsLeft, 1);
+
+          if (this.checkCollisions(projectedLocs, offset)) {
+            validMoveFound = true;
+            validNextMoves.push(cell + offset);
+          } else {
+            hitsLeft -= 1;
+          }
+        }
       }
     } else {
       // If ship has > 1 hit, establish limits and axis
@@ -98,18 +108,24 @@ class AI {
         axisOffsets = this.offsets.slice(0, 2); // x-axis
       }
 
-      const hitsLeft = ship.length - shipCellsHit.length;
-
       // Check if adjacent cell on same axis is valid
       for (let i = 0; i < 2; i += 1) {
         const limit = limits[i];
         const offset = axisOffsets[i];
+        let validMoveFound = false;
+        let hitsLeft = ship.length - shipCellsHit.length;
 
         // project ship onto valid adjacent left/right/up/down cells at each edge
-        const projectedLocs = projectShipLocs(limit, offset, hitsLeft, 1);
+        while (!validMoveFound && hitsLeft > 0) {
+          const projectedLocs = projectShipLocs(limit, offset, hitsLeft, 1);
 
-        if (this.checkCollisions(projectedLocs, offset)) {
-          validNextMoves.push(limit + offset);
+          if (this.checkCollisions(projectedLocs, offset)) {
+            validMoveFound = true;
+            validNextMoves.push(limit + offset);
+          } else {
+            // If no valid moves found for the projection, reduce projected size
+            hitsLeft -= 1;
+          }
         }
       }
     }
