@@ -7,7 +7,7 @@ import { shipLengths, getNextShip } from './helpers';
 class Game {
   constructor() {
     this.p1 = new Player(); // Human player
-    this.p2 = new Player(new AI(this.p1.board.board)); // Computer
+    this.p2 = new Player(new AI()); // Computer
 
     this.view = new View();
 
@@ -57,7 +57,7 @@ class Game {
 
         const nextIndex = this.p2.AI.getSmartShot(this.p2.movesMade);
         const cell = this.view.getCell(this.p1.name, nextIndex);
-        this.p2.AI.clickCell(cell);
+        this.p2.AI.clickCell(nextIndex, cell);
       }
     }
 

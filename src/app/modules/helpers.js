@@ -1,12 +1,12 @@
 export function checkEdgeCollisions(locs, axis) {
-  if (axis === 'x' || axis === 1) {
+  for (const loc of locs) {
+    if (loc < 0 || loc > 99) return false;
+  }
+
+  if (axis === 'x' || axis === 1 || axis === -1) {
     const locsStr = locs.map((loc) => loc.toString());
 
     if (locsStr.some((loc) => loc.slice(-1) === '9' && locsStr.indexOf(loc) !== (locsStr.length - 1))) return false;
-  } else {
-    for (const loc of locs) {
-      if (loc > 99) return false;
-    }
   }
 
   return true;

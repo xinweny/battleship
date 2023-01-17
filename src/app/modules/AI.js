@@ -1,3 +1,5 @@
+import GameBoard from '../models/GameBoard';
+
 import {
   randElement,
   getActiveShips,
@@ -6,7 +8,7 @@ import {
 } from './helpers';
 
 class AI {
-  constructor(oppBoard) {
+  constructor() {
     this.cellsHit = {
       carrier: [],
       battleship: [],
@@ -15,7 +17,7 @@ class AI {
       patrolBoat: [],
     };
 
-    this.oppBoard = oppBoard;
+    this.modelBoard = (new GameBoard()).board;
     this.offsets = [-1, 1, -10, 10];
   }
 
@@ -42,6 +44,7 @@ class AI {
     if (ship && !ship.isSunk()) {
       // If previous move hit a ship that is not sunk, update cellsHit to remember the move
       this.cellsHit[ship.name].push(prevCell);
+      this.modelBoard[prevCell].ship = ship;
 
       loc = this.findSuitableMoves(ship);
     } else {
@@ -74,11 +77,14 @@ class AI {
     const validNextMoves = [];
 
     if (shipCellsHit.length === 1) {
-      // If ship hit once, check valid adjacent left/right/up/down cells
+      // If ship hit once, project ship onto valid adjacent left/right/up/down cells
       const cell = shipCellsHit[0];
 
       for (const offset of this.offsets) {
-        if (this.checkValidMove(cell, offset)) validNextMoves.push(cell + offset);
+        const projectedLocs = [...Array(ship.length - 1).keys()]
+          .map((i) => cell + (offset * (i + 1)));
+
+        if (this.checkCollisions(projectedLocs, offset)) validNextMoves.push(cell + offset);
       }
     } else {
       // If ship has > 1 hit, establish limits and axis
@@ -92,12 +98,18 @@ class AI {
         axisOffsets = this.offsets.slice(0, 2); // x-axis
       }
 
+      const hitsLeft = ship.length - shipCellsHit.length;
+
       // Check if adjacent cell on same axis is valid
-      for (const limit of limits) {
-        for (const offset of axisOffsets) {
-          if (this.checkValidMove(limit, offset)) {
-            validNextMoves.push(limit + offset);
-          }
+      for (let i = 0; i < 2; i += 1) {
+        const limit = limits[i];
+        const offset = axisOffsets[i];
+
+        const projectedLocs = [...Array(hitsLeft).keys()]
+          .map((n) => limit + (offset * (n + 1)));
+
+        if (this.checkCollisions(projectedLocs, offset)) {
+          validNextMoves.push(limit + offset);
         }
       }
     }
@@ -115,33 +127,16 @@ class AI {
       for (const offset of [1, 10]) {
         const locs = [...Array(length).keys()].map((i) => emptyLoc + (offset * i));
 
-        if (this.checkCollisions(locs, offset, this.oppBoard)) validLocs.push(locs);
+        if (this.checkCollisions(locs, offset)) validLocs.push(locs);
       }
     }
 
     return validLocs;
   }
 
-  checkValidMove(start, offset) {
-    const end = start + offset;
+  clickCell(index, cell) {
+    this.modelBoard[index].isShot = true;
 
-    if (end < 0 || end > 99) return false;
-
-    // Check if move has already been made
-    if (this.oppBoard[end].isShot) return false;
-
-    const lastStartDigit = start.toString().slice(-1)[0];
-
-    // Check edge collision
-    if (offset === -1) return !(lastStartDigit === '0'); // left
-    if (offset === 1) return !(lastStartDigit === '9'); // right
-    if (offset === -10) return !(start < 10); // up
-    if (offset === 10) return !(start > 89); // down
-
-    return false;
-  }
-
-  clickCell(cell) {
     cell.click();
   }
 
@@ -158,15 +153,15 @@ class AI {
   }
 
   getEmptyLocs() {
-    return this.oppBoard.filter((cell) => !cell.isShot)
-      .map((cell) => this.oppBoard.indexOf(cell));
+    return this.modelBoard.filter((cell) => !cell.isShot)
+      .map((cell) => this.modelBoard.indexOf(cell));
   }
 
   checkCollisions(locs, axis) {
     if (!checkEdgeCollisions(locs, axis)) return false;
 
     for (const loc of locs) {
-      if (this.oppBoard[loc].isShot) return false;
+      if (this.modelBoard[loc].isShot) return false;
     }
 
     return true;
