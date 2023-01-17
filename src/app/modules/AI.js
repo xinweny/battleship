@@ -98,12 +98,14 @@ class AI {
       }
 
       // Check if adjacent cell on same axis is valid
+
       for (let i = 0; i < 2; i += 1) {
         const limit = limits[i];
         const offset = axisOffsets[i];
 
         const move = this.findValidProjection(limit, offset, ship.length - shipCellsHit.length);
-        if (move) validNextMoves.push(move);
+
+        if (move != null) validNextMoves.push(move);
       }
     }
 
@@ -166,9 +168,8 @@ class AI {
     // project ship onto valid adjacent left/right/up/down cells at each edge
     while (length > 0) {
       const projectedLocs = projectShipLocs(start, offset, length, 1);
-      const check = this.checkCollisions(projectedLocs, offset);
 
-      if (check) return start + offset;
+      if (this.checkCollisions(projectedLocs, offset)) return start + offset;
 
       // If no valid moves found for the projection, reduce projected size
       length -= 1;

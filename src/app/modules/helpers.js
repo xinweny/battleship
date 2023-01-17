@@ -3,6 +3,8 @@ export function checkEdgeCollisions(locs, axis) {
     if (loc < 0 || loc > 99) return false;
   }
 
+  if (locs.length === 1) return true;
+
   if (axis === 'x' || axis === 1 || axis === -1) {
     const locsStr = locs.map((loc) => loc.toString());
 

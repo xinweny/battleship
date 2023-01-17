@@ -147,7 +147,7 @@ class Game {
   }
 
   randomizePlayerShips() {
-    this.p1.board.resetBoard();
+    this.p1.board.initBoard();
     this.p1.board.placeShipsRandomly();
 
     this.placementState.allShipsPlaced = true;
@@ -156,10 +156,13 @@ class Game {
   }
 
   resetPlayerBoard() {
-    this.p1.board.resetBoard();
+    this.p1.board.initBoard();
 
-    this.placementState.allShipsPlaced = false;
-    this.placementState.currentShip = 'carrier';
+    this.placementState = {
+      axis: 'x',
+      currentShip: 'carrier',
+      allShipsPlaced: false,
+    };
 
     return this.p1.board.board;
   }
