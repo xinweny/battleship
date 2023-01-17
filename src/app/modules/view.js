@@ -98,8 +98,15 @@ class View {
       boardInfo.appendChild(shipText);
     });
 
-    Object.keys(ships).forEach(() => {
+    Object.keys(ships).forEach((ship) => {
+      const progressMeter = createElement('meter', 'progress-meter');
+      progressMeter.id = `${player.name}-${ship}-meter`;
 
+      progressMeter.setAttribute('value', 0);
+      progressMeter.setAttribute('min', 0);
+      progressMeter.setAttribute('max', ships[ship].length);
+
+      boardInfo.appendChild(progressMeter);
     });
 
     this.elements[`${player.name}GameWindow`].appendChild(boardInfo);
@@ -188,6 +195,10 @@ class View {
 
             const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
             this.setGameMessage(`You hit the ${shipName}.`);
+
+            const progressMeter = document.getElementById(`${outcome.opponent.name}-${ship}-meter`);
+            const newValue = parseInt(progressMeter.getAttribute('value'), 10) + 1;
+            progressMeter.setAttribute('value', newValue);
 
             if (outcome.winner) {
               const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
