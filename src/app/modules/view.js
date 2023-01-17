@@ -154,14 +154,15 @@ class View {
 
         const outcome = handler(i);
 
-        if (outcome && outcome.validMove) {
+        if (outcome.validMove) {
           cell.style.backgroundColor = getCellColor(outcome, i);
 
           if (outcome.winner) {
             const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
             this.setGameMessage(message);
+            this.resetBoardEventListeners('p2');
           }
-        } else if (player.name === 'p1') {
+        } else if (player.name === 'p1' && !outcome.winner) {
           this.setGameMessage('You already shot at that cell.');
         }
       });
@@ -197,11 +198,13 @@ class View {
     });
   }
 
-  resetBoardEventListeners() {
-    const p1Board = this.elements.p1Board.cloneNode(true);
-    this.elements.p1Board.parentNode.replaceChild(p1Board, this.elements.p1Board);
+  resetBoardEventListeners(playerName) {
+    const oldBoard = this.elements[`${playerName}Board`];
 
-    this.elements.p1Board = p1Board;
+    const cloneBoard = oldBoard.cloneNode(true);
+    oldBoard.parentNode.replaceChild(cloneBoard, oldBoard);
+
+    this.elements[`${playerName}Board`] = cloneBoard;
   }
 
   getCell(playerName, index) {

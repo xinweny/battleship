@@ -64,6 +64,6 @@ export function getNextShip(currentShip) {
   return shipNames[index];
 }
 
-export function projectShipLocs(start, offset, length) {
-  return [...Array(length).keys()].map((i) => start + (offset * (i + 1)));
+export function projectShipLocs(start, offset, length, shift = 0) {
+  return [...Array(length).keys()].map((i) => start + (offset * (i + shift)));
 }

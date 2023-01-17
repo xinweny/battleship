@@ -64,6 +64,7 @@ class AI {
 
         // Get all valid placements on the board for that ship
         const validLocs = this.modelValidPlacements(shipLength);
+        console.log(validLocs);
 
         // Pick random element of randomly selected location array
         loc = randElement(randElement(validLocs));
@@ -82,7 +83,7 @@ class AI {
       const cell = shipCellsHit[0];
 
       for (const offset of this.offsets) {
-        const projectedLocs = projectShipLocs(cell, offset, ship.length - 1);
+        const projectedLocs = projectShipLocs(cell, offset, ship.length - 1, 1);
 
         if (this.checkCollisions(projectedLocs, offset)) validNextMoves.push(cell + offset);
       }
@@ -106,7 +107,7 @@ class AI {
         const offset = axisOffsets[i];
 
         // project ship onto valid adjacent left/right/up/down cells at each edge
-        const projectedLocs = projectShipLocs(limit, offset, hitsLeft);
+        const projectedLocs = projectShipLocs(limit, offset, hitsLeft, 1);
 
         if (this.checkCollisions(projectedLocs, offset)) {
           validNextMoves.push(limit + offset);

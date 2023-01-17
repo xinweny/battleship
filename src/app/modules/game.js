@@ -174,7 +174,7 @@ class Game {
   }
 
   startGame() {
-    this.view.resetBoardEventListeners();
+    this.view.resetBoardEventListeners(this.p1.name);
 
     this.view.renderBoard(this.p1);
     this.view.renderBoard(this.p2);
