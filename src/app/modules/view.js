@@ -160,6 +160,15 @@ class View {
       this.colorBoard(board);
     });
   }
+
+  bindClickResetButton(handler) {
+    this.elements.resetButton.addEventListener('click', () => {
+      const board = handler();
+
+      this.colorBoard(board);
+      this.elements.gameMessage.innerText = 'Place your carrier (Press space to rotate';
+    });
+  }
 }
 
 export default View;

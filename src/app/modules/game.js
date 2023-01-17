@@ -15,17 +15,9 @@ class Game {
     this.winner = null;
     this.placementState = {
       axis: 'x',
-      shipName: 'carrier',
-      validPlacement: false,
+      currentShip: 'carrier',
       allShipsPlaced: false,
     };
-
-    // Place player ships
-    // this.p1.board.placeShip('carrier', 4, 'x');
-    // this.p1.board.placeShip('battleship', 12, 'y');
-    // this.p1.board.placeShip('cruiser', 97, 'x');
-    // this.p1.board.placeShip('submarine', 66, 'y');
-    // this.p1.board.placeShip('patrolBoat', 38, 'x');
 
     // Place computer ships
     this.p2.board.placeShipsRandomly();
@@ -102,7 +94,7 @@ class Game {
     };
 
     if (!this.placementState.allShipsPlaced) {
-      const shipLength = shipLengths[this.placementState.shipName];
+      const shipLength = shipLengths[this.placementState.currentShip];
 
       const locs = [...Array(shipLength).keys()].map((n) => ((this.placementState.axis === 'x') ? i + n : i + (n * 10)));
 
@@ -111,8 +103,6 @@ class Game {
       if (isValid) {
         outcome.valid = true;
         outcome.viewLocs = locs;
-
-        this.placementState.validPlacement = true;
       } else if (this.placementState.axis === 'y') {
         outcome.viewLocs = locs.filter((loc) => loc < 100);
       } else {
@@ -132,17 +122,16 @@ class Game {
   placeShip(index) {
     const info = {};
 
-    this.p1.board.placeShip(this.placementState.shipName, index, this.placementState.axis);
+    this.p1.board.placeShip(this.placementState.currentShip, index, this.placementState.axis);
 
     info.board = this.p1.board.board;
 
     if (this.p1.board.getShipsPlaced().length === 5) {
       info.nextShip = null;
       this.placementState.allShipsPlaced = true;
-      console.log(1);
     } else {
-      const nextShip = getNextShip(this.placementState.shipName);
-      this.placementState.shipName = nextShip;
+      const nextShip = getNextShip(this.placementState.currentShip);
+      this.placementState.currentShip = nextShip;
       info.nextShip = nextShip;
     }
 
@@ -157,7 +146,16 @@ class Game {
     this.p1.board.resetBoard();
     this.p1.board.placeShipsRandomly();
 
-    console.log(this.p1.board.board);
+    this.placementState.allShipsPlaced = true;
+
+    return this.p1.board.board;
+  }
+
+  resetPlayerBoard() {
+    this.p1.board.resetBoard();
+
+    this.placementState.allShipsPlaced = false;
+    this.placementState.currentShip = 'carrier';
 
     return this.p1.board.board;
   }
@@ -171,6 +169,7 @@ class Game {
     this.view.bindClickPlacementCell(this.placeShip.bind(this));
 
     this.view.bindClickRandomButton(this.randomizePlayerShips.bind(this));
+    this.view.bindClickResetButton(this.resetPlayerBoard.bind(this));
   }
 
   startGame() {
