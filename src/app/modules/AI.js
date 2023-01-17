@@ -64,7 +64,6 @@ class AI {
 
         // Get all valid placements on the board for that ship
         const validLocs = this.modelValidPlacements(shipLength);
-        console.log(validLocs);
 
         // Pick random element of randomly selected location array
         loc = randElement(randElement(validLocs));

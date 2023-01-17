@@ -6,6 +6,10 @@ import { shipLengths, getNextShip } from './helpers';
 
 class Game {
   constructor() {
+    this.init();
+  }
+
+  init() {
     this.p1 = new Player(); // Human player
     this.p2 = new Player(new AI()); // Computer
 
@@ -181,6 +185,13 @@ class Game {
 
     this.view.bindClickOpponentCell(this.playPlayerTurn.bind(this), this.p1);
     this.view.bindClickOpponentCell(this.playComputerTurn.bind(this), this.p2);
+    this.view.bindClickRestartButton(this.restartGame.bind(this));
+  }
+
+  restartGame() {
+    this.init();
+
+    this.setupGame();
   }
 }
 

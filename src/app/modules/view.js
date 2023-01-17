@@ -8,6 +8,9 @@ class View {
     const startButton = createElement('button', 'start-button');
     startButton.innerText = 'Start';
 
+    const restartButton = createElement('button', '.restart-button');
+    restartButton.innerText = 'Restart';
+
     this.elements = {
       p1GameWindow: document.getElementById('p1-window'),
       p2GameWindow: document.getElementById('p2-window'),
@@ -16,6 +19,7 @@ class View {
       gameMessage: document.getElementById('message-window'),
 
       startButton,
+      restartButton,
     };
   }
 
@@ -74,10 +78,10 @@ class View {
     this.elements.p2GameWindow.style.display = 'none';
   }
 
-  renderStartButton() {
-    this.elements.gameMessage.innerText = '';
+  renderInGameMessage(element, reset = false) {
+    if (reset) this.elements.gameMessage.innerHTML = '';
 
-    this.elements.gameMessage.appendChild(this.elements.startButton);
+    this.elements.gameMessage.appendChild(element);
   }
 
   bindMouseOverCell(handler) {
@@ -139,7 +143,7 @@ class View {
         if (nextShip != null) {
           this.setGameMessage(`Place your ${nextShip} (Press space to rotate)`);
         } else {
-          this.renderStartButton();
+          this.renderInGameMessage(this.elements.startButton, true);
         }
       }
     });
@@ -160,7 +164,11 @@ class View {
           if (outcome.winner) {
             const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
             this.setGameMessage(message);
+
+            this.renderInGameMessage(this.elements.restartButton);
             this.resetBoardEventListeners('p2');
+          } else if (player.name === 'p1') {
+            // Show shots, hits, misses etc.
           }
         } else if (player.name === 'p1' && !outcome.winner) {
           this.setGameMessage('You already shot at that cell.');
@@ -175,7 +183,7 @@ class View {
 
       this.colorBoard(board);
 
-      this.renderStartButton();
+      this.renderInGameMessage(this.elements.startButton, true);
     });
   }
 
@@ -195,6 +203,12 @@ class View {
 
       this.elements.gameMessage.innerHTML = '';
       this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
+    });
+  }
+
+  bindClickRestartButton(handler) {
+    this.elements.restartButton.addEventListener('click', () => {
+      handler();
     });
   }
 
