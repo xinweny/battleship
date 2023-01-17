@@ -5,6 +5,7 @@ import {
   getActiveShips,
   shipLengths,
   checkEdgeCollisions,
+  projectShipLocs,
 } from './helpers';
 
 class AI {
@@ -81,8 +82,7 @@ class AI {
       const cell = shipCellsHit[0];
 
       for (const offset of this.offsets) {
-        const projectedLocs = [...Array(ship.length - 1).keys()]
-          .map((i) => cell + (offset * (i + 1)));
+        const projectedLocs = projectShipLocs(cell, offset, ship.length - 1);
 
         if (this.checkCollisions(projectedLocs, offset)) validNextMoves.push(cell + offset);
       }
@@ -105,8 +105,8 @@ class AI {
         const limit = limits[i];
         const offset = axisOffsets[i];
 
-        const projectedLocs = [...Array(hitsLeft).keys()]
-          .map((n) => limit + (offset * (n + 1)));
+        // project ship onto valid adjacent left/right/up/down cells at each edge
+        const projectedLocs = projectShipLocs(limit, offset, hitsLeft);
 
         if (this.checkCollisions(projectedLocs, offset)) {
           validNextMoves.push(limit + offset);
@@ -122,10 +122,10 @@ class AI {
 
     const emptyLocs = this.getEmptyLocs();
 
-    // Check
+    // Check project ship on x and y axis onto all empty cells
     for (const emptyLoc of emptyLocs) {
       for (const offset of [1, 10]) {
-        const locs = [...Array(length).keys()].map((i) => emptyLoc + (offset * i));
+        const locs = projectShipLocs(emptyLoc, offset, length);
 
         if (this.checkCollisions(locs, offset)) validLocs.push(locs);
       }
