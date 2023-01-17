@@ -168,8 +168,6 @@ class AI {
       const projectedLocs = projectShipLocs(start, offset, length, 1);
       const check = this.checkCollisions(projectedLocs, offset);
 
-      console.log(projectedLocs, check);
-
       if (check) return start + offset;
 
       // If no valid moves found for the projection, reduce projected size
