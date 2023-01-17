@@ -19,23 +19,6 @@ export function createElement(tag, className) {
   return element;
 }
 
-export function getCellColor(outcome, i) {
-  const opp = outcome.opponent;
-  const oppBoard = opp.board.board;
-
-  let color = null;
-
-  if (oppBoard[i].ship && oppBoard[i].isShot) {
-    color = 'green';
-  } else if (oppBoard[i].ship && opp.name === 'p1') {
-    color = 'gray';
-  } else if (oppBoard[i].ship === null && oppBoard[i].isShot) {
-    color = 'red';
-  }
-
-  return color;
-}
-
 export function randElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }

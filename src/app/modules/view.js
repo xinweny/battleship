@@ -1,6 +1,5 @@
 import {
   createElement,
-  getCellColor,
 } from './helpers';
 
 class View {
@@ -159,7 +158,18 @@ class View {
         const outcome = handler(i);
 
         if (outcome.validMove) {
-          cell.style.backgroundColor = getCellColor(outcome, i);
+          const oppBoard = outcome.opponent.board.board;
+          const { ship } = oppBoard[i];
+
+          if (ship && oppBoard[i].isShot) {
+            cell.style.backgroundColor = 'green';
+            const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
+
+            this.setGameMessage(`You hit the ${shipName}.`);
+          } else {
+            cell.style.backgroundColor = 'red';
+            this.setGameMessage('You missed!');
+          }
 
           if (outcome.winner) {
             const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
@@ -201,7 +211,7 @@ class View {
     this.elements.startButton.addEventListener('click', () => {
       handler();
 
-      this.elements.gameMessage.innerHTML = '';
+      this.setGameMessage("Click on your opponent's board to fire shots.");
       this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
     });
   }
