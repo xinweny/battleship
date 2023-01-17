@@ -82,19 +82,8 @@ class AI {
       const cell = shipCellsHit[0];
 
       for (const offset of this.offsets) {
-        let validMoveFound = false;
-        let hitsLeft = ship.length - 1;
-
-        while (!validMoveFound && hitsLeft > 0) {
-          const projectedLocs = projectShipLocs(cell, offset, hitsLeft, 1);
-
-          if (this.checkCollisions(projectedLocs, offset)) {
-            validMoveFound = true;
-            validNextMoves.push(cell + offset);
-          } else {
-            hitsLeft -= 1;
-          }
-        }
+        const move = this.findValidProjection(cell, offset, ship.length - 1);
+        if (move) validNextMoves.push(move);
       }
     } else {
       // If ship has > 1 hit, establish limits and axis
@@ -112,21 +101,9 @@ class AI {
       for (let i = 0; i < 2; i += 1) {
         const limit = limits[i];
         const offset = axisOffsets[i];
-        let validMoveFound = false;
-        let hitsLeft = ship.length - shipCellsHit.length;
 
-        // project ship onto valid adjacent left/right/up/down cells at each edge
-        while (!validMoveFound && hitsLeft > 0) {
-          const projectedLocs = projectShipLocs(limit, offset, hitsLeft, 1);
-
-          if (this.checkCollisions(projectedLocs, offset)) {
-            validMoveFound = true;
-            validNextMoves.push(limit + offset);
-          } else {
-            // If no valid moves found for the projection, reduce projected size
-            hitsLeft -= 1;
-          }
-        }
+        const move = this.findValidProjection(limit, offset, ship.length - shipCellsHit.length);
+        if (move) validNextMoves.push(move);
       }
     }
 
@@ -181,6 +158,26 @@ class AI {
     }
 
     return true;
+  }
+
+  findValidProjection(start, offset, l) {
+    let validMoveFound = false;
+    let length = l;
+
+    // project ship onto valid adjacent left/right/up/down cells at each edge
+    while (!validMoveFound && length > 0) {
+      const projectedLocs = projectShipLocs(start, offset, l, 1);
+
+      if (this.checkCollisions(projectedLocs, offset)) {
+        validMoveFound = true;
+        return start + offset;
+      }
+
+      // If no valid moves found for the projection, reduce projected size
+      length -= 1;
+    }
+
+    return null;
   }
 }
 
