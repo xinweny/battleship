@@ -34,7 +34,7 @@ module.exports = {
         exclude: /node_modules/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name]-[hash][ext]',
+          filename: 'assets/[name][ext]',
         },
       },
       {
