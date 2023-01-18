@@ -10,6 +10,10 @@ class View {
     const restartButton = createElement('button', 'restart-button');
     restartButton.innerText = 'Restart';
 
+    const turnCounter = createElement('p');
+    turnCounter.id = 'turn-counter';
+    turnCounter.innerText = 'Turn 1';
+
     this.elements = {
       p1GameWindow: document.getElementById('p1-window'),
       p2GameWindow: document.getElementById('p2-window'),
@@ -20,6 +24,7 @@ class View {
 
       startButton,
       restartButton,
+      turnCounter,
     };
   }
 
@@ -192,6 +197,8 @@ class View {
           const oppBoard = outcome.opponent.board.board;
           const { ship } = oppBoard[i];
 
+          if (player.name === 'p1') this.elements.turnCounter.innerText = `Turn ${outcome.turnCount}`;
+
           if (ship && oppBoard[i].isShot) {
             cell.style.backgroundColor = 'green';
 
@@ -246,6 +253,7 @@ class View {
 
       this.setMessage('Click to fire shots.', true);
 
+      this.elements.messageWindow.appendChild(this.elements.turnCounter);
       this.elements.messageWindow.appendChild(this.elements.restartButton);
     });
   }

@@ -16,6 +16,8 @@ class Game {
     this.view = new View();
 
     this.turn = 'p1';
+    this.turnCounter = 1;
+
     this.winner = null;
     this.placementState = {
       axis: 'x',
@@ -51,6 +53,7 @@ class Game {
 
     if (!oppBoard.board[index].isShot) {
       outcome.validMove = true;
+      this.turnCounter += 1;
 
       this.p1.fireShot(this.p2, index);
 
@@ -64,6 +67,8 @@ class Game {
 
       outcome.winner = this.winner;
     }
+
+    outcome.turnCount = this.turnCounter;
 
     return outcome;
   }
