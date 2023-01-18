@@ -248,7 +248,7 @@ class View {
       this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
 
       for (const window of ['p1GameWindow', 'p2GameWindow']) {
-        const label = createElement('p', 'window-label');
+        const label = createElement('p', 'board-label');
         label.innerText = (window === 'p1GameWindow') ? 'Computer' : 'Player';
         this.elements[window].prepend(label);
       }
