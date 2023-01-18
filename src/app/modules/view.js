@@ -216,7 +216,7 @@ class View {
             }
           } else {
             cell.style.backgroundColor = 'red';
-            if (!outcome.winner) this.setMessage('You missed!');
+            if (!outcome.winner) this.setMessage('');
           }
         } else if (player.name === 'p1' && !outcome.winner) {
           this.setMessage('You already shot at that cell.');

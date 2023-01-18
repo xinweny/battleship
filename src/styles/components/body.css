@@ -2,7 +2,6 @@
 @import './game-window.css';
 
 #body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	display: grid;
+	grid-template-rows: auto 1fr;
 }
