@@ -26,6 +26,10 @@
 	background-color: #3343AE;
 }
 
+#p1-board .cell.has-ship.hit {
+	background-color: rgb(163, 19, 19);
+}
+
 .cell.valid {
 	background-color: rgb(147, 255, 248);
 }

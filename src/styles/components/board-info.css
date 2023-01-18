@@ -11,11 +11,21 @@
 
 .progress-meter {
 	width: 50px;
+	--meter-background: white;
 }
 
 meter::-webkit-meter-bar {
 	background: none;
-	background-color: white;
+	background-image: var(--meter-background);
 	border: none;
 	border-radius: 2px;
+}
+
+
+#p1-board-info meter::-webkit-meter-optimum-value {
+	background: rgb(163, 19, 19);
+}
+
+#p2-board-info meter::-webkit-meter-optimum-value {
+	background: #3343AE;
 }

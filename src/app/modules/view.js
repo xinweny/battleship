@@ -105,12 +105,28 @@ class View {
     });
 
     Object.keys(ships).forEach((ship) => {
+      const shipLength = ships[ship].length;
+
       const progressMeter = createElement('meter', 'progress-meter');
       progressMeter.id = `${player.name}-${ship}-meter`;
 
       progressMeter.setAttribute('value', 0);
       progressMeter.setAttribute('min', 0);
-      progressMeter.setAttribute('max', ships[ship].length);
+      progressMeter.setAttribute('max', shipLength);
+
+      const colors = [...Array(shipLength - 1).keys()]
+        .map((i) => {
+          const width = Math.round(100 / shipLength);
+          const lineStart = width * (i + 1);
+          const lineEnd = lineStart + 1;
+          const bgEnd = (i === shipLength - 2) ? 100 : width * (i + 2);
+          const startBg = (i === 0) ? `white 0%, white ${lineStart}%, ` : '';
+          return `${startBg}black ${lineStart}%, black ${lineEnd}%, white ${lineEnd}%, white ${bgEnd}%`;
+        })
+        .join(', ');
+
+      const gradient = `linear-gradient(90deg, ${colors})`;
+      progressMeter.style.setProperty('--meter-background', gradient);
 
       boardInfo.append(progressMeter);
     });
