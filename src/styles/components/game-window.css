@@ -1,4 +1,6 @@
 @import './game-board.css';
+@import './game-buttons.css';
+@import './board-info.css';
 
 #game-window h2 {
 	text-align: center;
@@ -11,30 +13,8 @@
 	flex-wrap: wrap;
 }
 
-.game-buttons {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
-}
-
-.game-buttons button {
-	font-size: 16px;
-}
-
-.game-buttons button:hover {
-	color: white;
-}
-
-.board-info {
-	display: grid;
-	grid-template-rows: repeat(2, min-content);
-	grid-template-columns: repeat(5, 1fr);
-}
-
-.board-info p {
-	font-size: 8px;
-}
-
-.progress-meter {
-	width: 50px;
+.board-label {
+	text-align: center;
+	margin-bottom: 8px;
+	font-size: 24px;
 }

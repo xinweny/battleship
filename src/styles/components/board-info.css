@@ -1,0 +1,21 @@
+.board-info {
+	display: grid;
+	grid-template-rows: repeat(2, min-content);
+	grid-template-columns: repeat(5, 1fr);
+	justify-items: center;
+}
+
+.board-info p {
+	font-size: 8px;
+}
+
+.progress-meter {
+	width: 50px;
+}
+
+meter::-webkit-meter-bar {
+	background: none;
+	background-color: white;
+	border: none;
+	border-radius: 2px;
+}

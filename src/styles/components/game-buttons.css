@@ -1,0 +1,13 @@
+.game-buttons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto auto;
+}
+
+.game-buttons button {
+	font-size: 16px;
+}
+
+.game-buttons button:hover {
+	color: white;
+}

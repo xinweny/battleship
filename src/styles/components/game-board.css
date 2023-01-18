@@ -10,6 +10,10 @@
 	margin-bottom: 8px;
 }
 
+#p2-board .cell:not(.hit):hover {
+	background-color: rgb(147, 255, 248);
+}
+
 .cell {
 	position: relative;
 	width: 30px;
