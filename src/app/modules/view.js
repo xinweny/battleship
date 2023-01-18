@@ -209,7 +209,7 @@ class View {
             progressMeter.setAttribute('value', newValue);
 
             if (outcome.winner) {
-              const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
+              const message = (player.name === 'p1') ? 'You won' : 'You lost';
               this.setMessage(message);
               this.resetBoardEventListeners('p2');
             }
