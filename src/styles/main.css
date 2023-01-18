@@ -7,6 +7,18 @@
 	margin: 0;
 }
 
+@font-face {
+  font-family: 'AntipastoPro';
+  src:  url('../assets/fonts/antipastopro.woff2') format('woff2'),
+        url('../assets/fonts/antipastopro.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'AristaPro';
+  src:  url('../assets/fonts/arista-pro-regular.woff2') format('woff2'),
+        url('../assets/fonts/arista-pro-regular.woff') format('woff');
+}
+
 a {
 	text-decoration: none;
 }
