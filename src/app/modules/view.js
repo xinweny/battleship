@@ -40,8 +40,8 @@ class View {
       const cell = createElement('div', 'cell');
       cell.setAttribute('data-index', i);
 
-      if (player.name === 'p1' && board[i].ship) {
-        cell.style.backgroundColor = 'gray';
+      if (board[i].ship) {
+        cell.classList.add('has-ship');
       }
 
       grid.appendChild(cell);
@@ -51,7 +51,9 @@ class View {
   colorBoard(board) {
     for (let i = 0; i < 100; i += 1) {
       const cell = this.elements.p1Board.children[i];
-      cell.style.backgroundColor = (board[i].ship == null) ? 'white' : 'gray';
+      cell.className = 'cell';
+
+      if (board[i].ship != null) cell.classList.add('has-ship');
     }
   }
 
@@ -129,18 +131,18 @@ class View {
         const outcome = handler(i);
 
         if (outcome.viewLocs) {
-          const cellColor = (outcome.valid) ? 'green' : 'red';
+          const cellClass = (outcome.valid) ? 'valid' : 'invalid';
 
           for (const boardCell of outcome.boardState) {
             const index = outcome.boardState.indexOf(boardCell);
             const viewCell = this.elements.p1Board.querySelector(`.cell[data-index="${index}"]`);
 
-            if (outcome.viewLocs.includes(index)) {
-              viewCell.style.backgroundColor = cellColor;
+            if (outcome.viewLocs.includes(index) && !boardCell.ship) {
+              viewCell.classList.add(cellClass);
             } else if (boardCell.ship) {
-              viewCell.style.backgroundColor = 'gray';
+              viewCell.classList.add('has-ship');
             } else {
-              viewCell.style.backgroundColor = 'white';
+              viewCell.className = 'cell';
             }
           }
         }
@@ -168,7 +170,7 @@ class View {
       const index = parseInt(evt.target.dataset.index, 10);
       const clickedCell = this.elements.p1Board.children[index];
 
-      if (clickedCell.style.backgroundColor === 'green') {
+      if (clickedCell.classList.contains('valid')) {
         const info = handler(index);
 
         this.colorBoard(info.board);
@@ -199,11 +201,11 @@ class View {
 
           if (player.name === 'p1') this.elements.turnCounter.innerText = `Turn ${outcome.turnCount}`;
 
-          if (ship && oppBoard[i].isShot) {
-            cell.style.backgroundColor = 'green';
+          cell.classList.add('hit');
 
+          if (ship && oppBoard[i].isShot) {
             const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
-            this.setMessage(`You hit the ${shipName}.`);
+            this.setMessage(`You hit the ${shipName}`);
 
             const progressMeter = document.getElementById(`${outcome.opponent.name}-${ship}-meter`);
             const newValue = parseInt(progressMeter.getAttribute('value'), 10) + 1;
@@ -214,12 +216,11 @@ class View {
               this.setMessage(message);
               this.resetBoardEventListeners('p2');
             }
-          } else {
-            cell.style.backgroundColor = 'red';
-            if (!outcome.winner) this.setMessage('');
+          } else if (!outcome.winner) {
+            this.setMessage('');
           }
         } else if (player.name === 'p1' && !outcome.winner) {
-          this.setMessage('You already shot at that cell.');
+          this.setMessage('You already shot at that cell');
         }
       });
     }
@@ -251,7 +252,7 @@ class View {
 
       handler();
 
-      this.setMessage('Click to fire shots.', true);
+      this.setMessage('Click to fire a shot', true);
 
       this.elements.messageWindow.appendChild(this.elements.turnCounter);
       this.elements.messageWindow.appendChild(this.elements.restartButton);

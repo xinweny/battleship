@@ -23,6 +23,26 @@
 	border-radius: 4px;
 }
 
+#p1-board .cell.has-ship {
+	background-color: #3343AE;
+}
+
+.cell.valid {
+	background-color: green;
+}
+
+.cell.invalid {
+	background-color: red;
+}
+
+#p1-board .cell.has-ship.hit, #p2-board .cell.has-ship.hit {
+	background-color: green;
+}
+
+.cell.hit {
+	background-color: red;
+}
+
 .board-info {
 	display: grid;
 	grid-template-rows: repeat(2, min-content);

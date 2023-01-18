@@ -24,9 +24,6 @@ class Game {
       currentShip: 'carrier',
       allShipsPlaced: false,
     };
-
-    // Place computer ships
-    this.p2.board.placeShipsRandomly();
   }
 
   switchTurn() {
@@ -186,6 +183,8 @@ class Game {
   }
 
   startGame() {
+    this.p2.board.placeShipsRandomly();
+
     this.view.resetBoardEventListeners(this.p1.name);
 
     this.view.renderBoard(this.p1);

@@ -6,3 +6,7 @@
 	grid-template-rows: auto 1fr;
 	background-color: lightskyblue;
 }
+
+#body, button {
+	font-family: 'TypoRoundLight', sans-serif;
+}

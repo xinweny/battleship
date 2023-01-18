@@ -2,7 +2,6 @@
 	display: grid;
 	grid-template-columns: 1fr auto auto;
 	padding: 0px 8px 8px 8px;
-	font-family: 'TypoRoundLight', sans-serif;
 }
 
 .game-message {
