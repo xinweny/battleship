@@ -1,9 +1,11 @@
 #header {
 	padding: 16px;
+	background-color: rgb(113, 47, 255);
+	color: white;
 }
 
 #header h1 {
-	text-align: center;
+	margin-left: 24px;
 	font-family: 'AristaPro', sans-serif;
 	font-size: 48px;
 }

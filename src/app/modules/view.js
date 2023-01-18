@@ -5,7 +5,7 @@ import {
 class View {
   constructor() {
     const startButton = createElement('button', 'start-button');
-    startButton.innerText = 'Start';
+    startButton.innerText = 'Start Game';
 
     const restartButton = createElement('button', 'restart-button');
     restartButton.innerText = 'Restart';
@@ -58,10 +58,7 @@ class View {
   }
 
   setMessage(text, resetWindow = false) {
-    if (resetWindow) {
-      this.elements.messageWindow.innerHTML = '';
-      this.elements.messageWindow.appendChild(this.elements.gameMessage);
-    }
+    if (resetWindow) this.renderInMessageWindow(this.elements.gameMessage);
 
     this.elements.gameMessage.innerText = text;
   }
@@ -86,8 +83,8 @@ class View {
     this.elements.p2GameWindow.style.display = 'none';
   }
 
-  renderInMessageWindow(element, resetMessage = false) {
-    if (resetMessage) this.elements.gameMessage.innerHTML = '';
+  renderInMessageWindow(element) {
+    this.elements.messageWindow.innerHTML = '';
 
     this.elements.messageWindow.appendChild(element);
   }
@@ -180,7 +177,7 @@ class View {
         if (nextShip != null) {
           this.setMessage(`Place your ${nextShip} (Press space to rotate)`);
         } else {
-          this.renderInMessageWindow(this.elements.startButton, true);
+          this.renderInMessageWindow(this.elements.startButton);
         }
       }
     });

@@ -5,6 +5,8 @@
 	gap: 8px;
 	padding: 8px;
 	font-family: 'TypoRoundLight', sans-serif;
+	background-color: rgb(113, 47, 255);
+	color: white;
 }
 
 #github-logo {
@@ -13,5 +15,6 @@
 }
 
 #footer > p > a {
+	color: rgb(177, 246, 255);
 	font-weight: bold;
 }

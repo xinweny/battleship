@@ -4,9 +4,14 @@
 #body {
 	display: grid;
 	grid-template-rows: auto 1fr;
-	background-color: lightskyblue;
+	background-color: rgb(221, 175, 252);
 }
 
 #body, button {
 	font-family: 'TypoRoundLight', sans-serif;
+}
+
+button {
+	border: none;
+	background-color: transparent;
 }

@@ -1,15 +1,34 @@
 #message-window {
+	height: 48px;
 	display: grid;
 	grid-template-columns: 1fr auto auto;
-	padding: 0px 8px 8px 8px;
+	margin-bottom: 16px;
+	background-color: rgb(58, 13, 156);
+	color: white;
+	gap: 24px;
 }
 
 .game-message {
 	text-align: center;
+	margin: auto;
+	font-size: 20px;
+}
+
+#message-window button {
+	color: white;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 .start-button {
-	width: 100px;
-	height: 40px;
+	font-size: 24px;
+}
+
+#turn-counter {
 	margin: auto;
+}
+
+.restart-button {
+	font-size: 16px;
+	margin-right: 16px;
 }

@@ -16,7 +16,7 @@ export function checkEdgeCollisions(locs, axis) {
 
 export function createElement(tag, className) {
   const element = document.createElement(tag);
-  element.className = className;
+  if (className) element.className = className;
 
   return element;
 }

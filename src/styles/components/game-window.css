@@ -1,3 +1,5 @@
+@import './game-board.css';
+
 #game-window h2 {
 	text-align: center;
 }
@@ -9,49 +11,18 @@
 	flex-wrap: wrap;
 }
 
-.game-board {
+.game-buttons {
 	display: grid;
-	grid-template-rows: repeat(10, 1fr);
-	grid-template-columns: repeat(10, 1fr);
-	gap: 1px;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto auto;
 }
 
-.cell {
-	position: relative;
-	width: 30px;
-	height: 30px;
-	background-color: white;
-	border-radius: 4px;
+.game-buttons button {
+	font-size: 16px;
 }
 
-#p1-board .cell.has-ship, #p2-board .cell.has-ship.hit {
-	background-color: #3343AE;
-}
-
-.cell.valid {
-	background-color: rgb(142, 223, 142);
-}
-
-.cell.invalid {
-	background-color: rgb(255, 92, 92);
-}
-
-#p1-board .cell.has-ship.hit::after, #p2-board .cell.has-ship.hit::after {
-	content: url('../../assets/cross.svg');
-	position: absolute; 
-	inset: 0;
-	margin: auto;
-	width: 30px;
-	height: 30px;
-}
-
-.cell.hit::after {
-	content: url('../../assets/dot.svg');
-	position: absolute; 
-	inset: 0;
-	margin: auto;
-	width: 30px;
-	height: 30px;
+.game-buttons button:hover {
+	color: white;
 }
 
 .board-info {
@@ -62,12 +33,6 @@
 
 .board-info p {
 	font-size: 8px;
-}
-
-.game-buttons {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
 }
 
 .progress-meter {
