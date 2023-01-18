@@ -44,7 +44,7 @@ class View {
         cell.classList.add('has-ship');
       }
 
-      grid.appendChild(cell);
+      grid.append(cell);
     }
   }
 
@@ -73,20 +73,20 @@ class View {
     const resetButton = createElement('button', 'reset-button');
     resetButton.innerText = 'Reset';
 
-    gameButtons.appendChild(randomButton);
-    gameButtons.appendChild(resetButton);
+    gameButtons.append(randomButton);
+    gameButtons.append(resetButton);
 
     this.elements.randomButton = randomButton;
     this.elements.resetButton = resetButton;
 
-    this.elements.p1GameWindow.appendChild(gameButtons);
+    this.elements.p1GameWindow.append(gameButtons);
     this.elements.p2GameWindow.style.display = 'none';
   }
 
   renderInMessageWindow(element) {
     this.elements.messageWindow.innerHTML = '';
 
-    this.elements.messageWindow.appendChild(element);
+    this.elements.messageWindow.append(element);
   }
 
   renderBoardInfo(player) {
@@ -101,7 +101,7 @@ class View {
       const shipText = createElement('p', 'ship-name');
       shipText.innerText = shipName;
 
-      boardInfo.appendChild(shipText);
+      boardInfo.append(shipText);
     });
 
     Object.keys(ships).forEach((ship) => {
@@ -112,10 +112,10 @@ class View {
       progressMeter.setAttribute('min', 0);
       progressMeter.setAttribute('max', ships[ship].length);
 
-      boardInfo.appendChild(progressMeter);
+      boardInfo.append(progressMeter);
     });
 
-    this.elements[`${player.name}GameWindow`].appendChild(boardInfo);
+    this.elements[`${player.name}GameWindow`].append(boardInfo);
   }
 
   bindMouseOverCell(handler) {
@@ -229,7 +229,7 @@ class View {
 
       this.colorBoard(board);
       this.elements.messageWindow.innerHTML = '';
-      this.elements.messageWindow.appendChild(this.elements.startButton);
+      this.elements.messageWindow.append(this.elements.startButton);
     });
   }
 
@@ -247,19 +247,28 @@ class View {
     this.elements.startButton.addEventListener('click', () => {
       this.elements.p1GameWindow.removeChild(this.elements.p1GameWindow.lastChild);
 
+      for (const window of ['p1GameWindow', 'p2GameWindow']) {
+        const label = createElement('p', 'window-label');
+        label.innerText = (window === 'p1GameWindow') ? 'Computer' : 'Player';
+        this.elements[window].prepend(label);
+      }
+
       handler();
 
       this.setMessage('Click to fire a shot', true);
 
-      this.elements.messageWindow.appendChild(this.elements.turnCounter);
-      this.elements.messageWindow.appendChild(this.elements.restartButton);
+      this.elements.messageWindow.append(this.elements.turnCounter);
+      this.elements.messageWindow.append(this.elements.restartButton);
     });
   }
 
   bindClickRestartButton(handler) {
     this.elements.restartButton.addEventListener('click', () => {
-      for (const window of [this.elements.p1GameWindow, this.elements.p2GameWindow]) {
-        window.removeChild(window.lastChild);
+      for (const window of ['p1GameWindow', 'p2GameWindow']) {
+        const playerWindow = this.elements[window];
+
+        playerWindow.removeChild(playerWindow.firstChild);
+        playerWindow.removeChild(playerWindow.lastChild);
       }
 
       handler();
