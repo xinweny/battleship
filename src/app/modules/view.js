@@ -15,7 +15,8 @@ class View {
       p2GameWindow: document.getElementById('p2-window'),
       p1Board: document.getElementById('p1-board'),
       p2Board: document.getElementById('p2-board'),
-      gameMessage: document.getElementById('message-window'),
+      messageWindow: document.getElementById('message-window'),
+      gameMessage: document.querySelector('.game-message'),
 
       startButton,
       restartButton,
@@ -49,16 +50,17 @@ class View {
     }
   }
 
-  setGameMessage(text) {
-    this.elements.gameMessage.innerHTML = '';
+  setMessage(text, resetWindow = false) {
+    if (resetWindow) {
+      this.elements.messageWindow.innerHTML = '';
+      this.elements.messageWindow.appendChild(this.elements.gameMessage);
+    }
 
-    const message = createElement('p', 'game-message');
-    message.innerText = text;
-    this.elements.gameMessage.appendChild(message);
+    this.elements.gameMessage.innerText = text;
   }
 
   renderStartScreen() {
-    this.setGameMessage('Place your carrier (Press space to rotate)');
+    this.setMessage('Place your carrier (Press space to rotate)', true);
 
     const gameButtons = createElement('div', 'game-buttons');
 
@@ -77,10 +79,10 @@ class View {
     this.elements.p2GameWindow.style.display = 'none';
   }
 
-  renderInGameMessage(element, reset = false) {
-    if (reset) this.elements.gameMessage.innerHTML = '';
+  renderInMessageWindow(element, resetMessage = false) {
+    if (resetMessage) this.elements.gameMessage.innerHTML = '';
 
-    this.elements.gameMessage.appendChild(element);
+    this.elements.messageWindow.appendChild(element);
   }
 
   renderBoardInfo(player) {
@@ -169,9 +171,9 @@ class View {
         const nextShip = (info.nextShip === 'patrolBoat') ? 'patrol boat' : info.nextShip;
 
         if (nextShip != null) {
-          this.setGameMessage(`Place your ${nextShip} (Press space to rotate)`);
+          this.setMessage(`Place your ${nextShip} (Press space to rotate)`);
         } else {
-          this.renderInGameMessage(this.elements.startButton, true);
+          this.renderInMessageWindow(this.elements.startButton, true);
         }
       }
     });
@@ -194,7 +196,7 @@ class View {
             cell.style.backgroundColor = 'green';
 
             const shipName = (ship === 'patrolBoat') ? 'patrol boat' : ship;
-            this.setGameMessage(`You hit the ${shipName}.`);
+            this.setMessage(`You hit the ${shipName}.`);
 
             const progressMeter = document.getElementById(`${outcome.opponent.name}-${ship}-meter`);
             const newValue = parseInt(progressMeter.getAttribute('value'), 10) + 1;
@@ -202,17 +204,15 @@ class View {
 
             if (outcome.winner) {
               const message = (player.name === 'p1') ? 'You won!' : 'You lost...';
-              this.setGameMessage(message);
-
-              this.renderInGameMessage(this.elements.restartButton);
+              this.setMessage(message);
               this.resetBoardEventListeners('p2');
             }
           } else {
             cell.style.backgroundColor = 'red';
-            if (!outcome.winner) this.setGameMessage('You missed!');
+            if (!outcome.winner) this.setMessage('You missed!');
           }
         } else if (player.name === 'p1' && !outcome.winner) {
-          this.setGameMessage('You already shot at that cell.');
+          this.setMessage('You already shot at that cell.');
         }
       });
     }
@@ -223,8 +223,8 @@ class View {
       const board = handler();
 
       this.colorBoard(board);
-
-      this.renderInGameMessage(this.elements.startButton, true);
+      this.elements.messageWindow.innerHTML = '';
+      this.elements.messageWindow.appendChild(this.elements.startButton);
     });
   }
 
@@ -234,7 +234,7 @@ class View {
 
       this.colorBoard(board);
 
-      this.setGameMessage('Place your carrier (Press space to rotate)');
+      this.setMessage('Place your carrier (Press space to rotate)');
     });
   }
 
@@ -244,7 +244,9 @@ class View {
 
       handler();
 
-      this.setGameMessage('Click to fire shots.');
+      this.setMessage('Click to fire shots.', true);
+
+      this.elements.messageWindow.appendChild(this.elements.restartButton);
     });
   }
 
