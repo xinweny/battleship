@@ -7,3 +7,9 @@
 .game-message {
 	text-align: center;
 }
+
+.start-button {
+	width: 100px;
+	height: 40px;
+	margin: auto;
+}

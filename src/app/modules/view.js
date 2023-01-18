@@ -234,7 +234,7 @@ class View {
 
       this.colorBoard(board);
 
-      this.setMessage('Place your carrier (Press space to rotate)');
+      this.setMessage('Place your carrier (Press space to rotate)', true);
     });
   }
 
