@@ -1,2 +1,8 @@
 @import './message-window.css';
 @import './game-window.css';
+
+#body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}

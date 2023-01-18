@@ -1,4 +1,9 @@
 #message-window {
 	display: grid;
 	grid-template-columns: 1fr auto;
+	padding: 0px 8px 8px 8px;
+}
+
+.game-message {
+	text-align: center;
 }
