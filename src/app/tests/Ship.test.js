@@ -5,6 +5,7 @@ it('Returns an object with the correct properties', () => {
     length: 5,
     hits: 0,
     name: 'carrier',
+    isPlaced: false,
     sunk: false,
   };
 
