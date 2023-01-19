@@ -1,4 +1,4 @@
-const GameBoard = require('../models/GameBoard');
+import GameBoard from '../models/GameBoard';
 
 let testBoard = new GameBoard();
 

@@ -1,6 +1,6 @@
-const Player = require('../models/Player');
-const GameBoard = require('../models/GameBoard');
-const AI = require('../modules/AI');
+import Player from '../models/Player';
+import GameBoard from '../models/GameBoard';
+import AI from '../modules/AI';
 
 const player = new Player();
 const computer = new Player(new AI());
