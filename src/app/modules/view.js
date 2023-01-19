@@ -151,8 +151,7 @@ class View {
             const viewCell = this.elements.p1Board.querySelector(`.cell[data-index="${index}"]`);
 
             if (outcome.viewLocs.includes(index) && !boardCell.ship) {
-              if (outcome.valid && viewCell.classList.contains('invalid')) viewCell.classList.remove('invalid');
-              viewCell.classList.add(cellClass);
+              viewCell.className = `cell ${cellClass}`;
             } else if (boardCell.ship) {
               viewCell.classList.add('has-ship');
             } else {
