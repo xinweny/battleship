@@ -1,7 +1,7 @@
 #message-window {
 	height: 48px;
 	display: grid;
-	grid-template-columns: 1fr auto auto;
+	grid-template-columns: 1fr auto 60px;
 	margin-bottom: 16px;
 	background-color: rgb(58, 13, 156);
 	color: white;
@@ -20,8 +20,17 @@
 	margin-bottom: auto;
 }
 
+#message-window button:active {
+	color: rgb(147, 255, 248);
+}
+
 .start-button {
 	font-size: 24px;
+	transition: font-size 0.5s ease;
+}
+
+.start-button:hover {
+	font-size: 28px;
 }
 
 #turn-counter {
@@ -31,4 +40,9 @@
 .restart-button {
 	font-size: 16px;
 	margin-right: 16px;
+	transition: font-size 0.5s ease;
+}
+
+.restart-button:hover {
+	font-size: 18px;
 }

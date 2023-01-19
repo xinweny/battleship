@@ -11,3 +11,7 @@
 .game-buttons button:hover {
 	color: white;
 }
+
+.game-buttons button:active {
+	color: rgb(147, 255, 248);
+}
